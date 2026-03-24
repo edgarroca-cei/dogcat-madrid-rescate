@@ -1,10 +1,21 @@
-const API_URL = import.meta.env.VITE_API_URL || '/api';
+// En desarrollo (npm run dev) usa el servidor Express en puerto 3001
+// En producción (Hostinger) usa las rutas PHP relativas
+const isDev = import.meta.env.DEV;
+
+const API_URL = import.meta.env.VITE_API_URL || (isDev ? 'http://localhost:3001/api' : '/api');
+
+// Helper: en producción las rutas van a archivos .php
+// En desarrollo van a las rutas Express originales (sin .php)
+function url(path: string) {
+  if (isDev) return `${API_URL}${path}`;
+  return `${API_URL}${path}.php`;
+}
 
 export const api = {
   // Blog Posts
   async getBlogPosts() {
     try {
-      const res = await fetch(`${API_URL}/posts.php`);
+      const res = await fetch(url('/posts'));
       if (!res.ok) throw new Error('Error fetching posts');
       return res.json();
     } catch (err) {
@@ -15,7 +26,10 @@ export const api = {
   
   async getBlogPost(id: string) {
     try {
-      const res = await fetch(`${API_URL}/posts.php?id=${encodeURIComponent(id)}`);
+      const endpoint = isDev
+        ? `${API_URL}/posts/${encodeURIComponent(id)}`
+        : `${API_URL}/posts.php?id=${encodeURIComponent(id)}`;
+      const res = await fetch(endpoint);
       if (!res.ok) throw new Error('Error fetching post');
       return res.json();
     } catch (err) {
@@ -27,7 +41,7 @@ export const api = {
   async uploadImage(file: File) {
     const formData = new FormData();
     formData.append('image', file);
-    const res = await fetch(`${API_URL}/upload.php`, {
+    const res = await fetch(url('/upload'), {
       method: 'POST',
       body: formData
     });
@@ -36,7 +50,7 @@ export const api = {
   },
   
   async saveBlogPost(postData: any) {
-    const res = await fetch(`${API_URL}/posts.php`, {
+    const res = await fetch(url('/posts'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(postData)
@@ -46,7 +60,10 @@ export const api = {
   },
   
   async deleteBlogPost(id: string) {
-    const res = await fetch(`${API_URL}/posts.php?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+    const endpoint = isDev
+      ? `${API_URL}/posts/${encodeURIComponent(id)}`
+      : `${API_URL}/posts.php?id=${encodeURIComponent(id)}`;
+    const res = await fetch(endpoint, { method: 'DELETE' });
     if (!res.ok) throw new Error('Error deleting post');
     return res.json();
   },
@@ -54,7 +71,10 @@ export const api = {
   // Donation Settings
   async getDonationSettings() {
     try {
-      const res = await fetch(`${API_URL}/settings.php`);
+      const endpoint = isDev
+        ? `${API_URL}/settings/donations`
+        : `${API_URL}/settings.php`;
+      const res = await fetch(endpoint);
       if (!res.ok) throw new Error('Error fetching settings');
       return res.json();
     } catch (err) {
@@ -64,7 +84,10 @@ export const api = {
   },
   
   async saveDonationSettings(settingsData: any) {
-    const res = await fetch(`${API_URL}/settings.php`, {
+    const endpoint = isDev
+      ? `${API_URL}/settings/donations`
+      : `${API_URL}/settings.php`;
+    const res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(settingsData)
@@ -76,7 +99,7 @@ export const api = {
   // Mapas
   async getMapas() {
     try {
-      const res = await fetch(`${API_URL}/mapas.php`);
+      const res = await fetch(url('/mapas'));
       if (!res.ok) throw new Error('Error fetching mapas');
       return res.json();
     } catch (err) {
@@ -86,7 +109,7 @@ export const api = {
   },
   
   async saveMapa(mapaData: any) {
-    const res = await fetch(`${API_URL}/mapas.php`, {
+    const res = await fetch(url('/mapas'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(mapaData)
@@ -96,7 +119,10 @@ export const api = {
   },
   
   async deleteMapa(id: string) {
-    const res = await fetch(`${API_URL}/mapas.php?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+    const endpoint = isDev
+      ? `${API_URL}/mapas/${encodeURIComponent(id)}`
+      : `${API_URL}/mapas.php?id=${encodeURIComponent(id)}`;
+    const res = await fetch(endpoint, { method: 'DELETE' });
     if (!res.ok) throw new Error('Error deleting mapa');
     return res.json();
   }
