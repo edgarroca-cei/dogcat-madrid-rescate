@@ -1,0 +1,25 @@
+# =====================================================
+# .htaccess para DOGCAT Madrid en Hostinger
+# =====================================================
+# 1. Las peticiones a /api/* van a los archivos PHP
+# 2. Los archivos estáticos (JS, CSS, imágenes) se sirven directamente
+# 3. Todo lo demás se redirige a index.html (SPA React Router)
+# =====================================================
+
+RewriteEngine On
+
+# Forzar HTTPS (recomendado en producción)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Si el archivo o directorio existe, servirlo directamente
+# (esto incluye JS, CSS, imágenes, uploads, etc)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Las peticiones a /api/* se dejan pasar (los archivos PHP ya existen)
+RewriteRule ^api/ - [L]
+
+# Todo lo demás va a index.html (React Router se encarga)
+RewriteRule ^ index.html [L]
