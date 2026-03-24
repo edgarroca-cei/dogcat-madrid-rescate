@@ -10,8 +10,9 @@
     "dev": "vite --port=3000 --host=0.0.0.0",
     "server": "node server/index.js",
     "dev:all": "concurrently \"npm run server\" \"npm run dev\"",
-    "build": "vite build",
+    "build": "npm rebuild sqlite3 --build-from-source && vite build",
     "build:render": "npm install && npm rebuild sqlite3 --build-from-source && npm run build",
+    "postinstall": "npm rebuild sqlite3 --build-from-source",
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"
