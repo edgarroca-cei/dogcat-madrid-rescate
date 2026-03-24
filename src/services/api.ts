@@ -1,11 +1,14 @@
 import { blogPosts } from '../data/blog';
 
-// En desarrollo (npm run dev) usa el servidor Express en puerto 3001
-// En producción (Hostinger) usa las rutas PHP relativas
+// Detectar entorno
 const isDev = import.meta.env.DEV;
+const isRender = window.location.hostname.includes('render.com');
+// Solo usamos PHP si estamos en producción Y NO es Render (lo cual significa Hostinger)
+const usePHP = !isDev && !isRender;
+
 const API_URL = import.meta.env.VITE_API_URL || (isDev ? 'http://localhost:3001/api' : '/api');
 
-// --- DATOS DE PRUEBA (MOCK DATA) PARA VERCEL/DEMO ---
+// --- DATOS DE PRUEBA (MOCK DATA) PARA FALLBACK ---
 const mockMapas = [
   {
     id: 'm1',
@@ -40,11 +43,11 @@ const mockSettings = {
   updatedAt: new Date().toISOString()
 };
 
-// Helper: en producción las rutas van a archivos .php
-// En desarrollo van a las rutas Express originales (sin .php)
+// Helper: en Hostinger las rutas van a archivos .php
+// En Render o Local van a las rutas Express originales (sin .php)
 function url(path: string) {
-  if (isDev) return `${API_URL}${path}`;
-  return `${API_URL}${path}.php`;
+  if (usePHP) return `${API_URL}${path}.php`;
+  return `${API_URL}${path}`;
 }
 
 export const api = {
@@ -55,21 +58,22 @@ export const api = {
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {
-      console.warn("Usando datos de prueba para BlogPosts (Modo Demo)");
+      console.warn("API falló, usando datos de prueba (Modo Demo)");
       return blogPosts;
     }
   },
   
   async getBlogPost(id: string) {
     try {
-      const endpoint = isDev
-        ? `${API_URL}/posts/${encodeURIComponent(id)}`
-        : `${API_URL}/posts.php?id=${encodeURIComponent(id)}`;
+      // Diferente manejo de IDs en Express vs PHP
+      const endpoint = usePHP
+        ? `${API_URL}/posts.php?id=${encodeURIComponent(id)}`
+        : `${API_URL}/posts/${encodeURIComponent(id)}`;
+        
       const res = await fetch(endpoint);
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {
-      console.warn(`Usando datos de prueba para BlogPost: ${id} (Modo Demo)`);
       return blogPosts.find(p => p.id === id || p.slug === id) || null;
     }
   },
@@ -85,7 +89,6 @@ export const api = {
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {
-      console.warn("Simulando subida de imagen (Modo Demo)");
       return { url: URL.createObjectURL(file) };
     }
   },
@@ -100,21 +103,19 @@ export const api = {
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {
-      console.warn("Simulando guardado de Blog Post (Modo Demo)");
       return { success: true, id: postData.id || 'new-id' };
     }
   },
   
   async deleteBlogPost(id: string) {
     try {
-      const endpoint = isDev
-        ? `${API_URL}/posts/${encodeURIComponent(id)}`
-        : `${API_URL}/posts.php?id=${encodeURIComponent(id)}`;
+      const endpoint = usePHP
+        ? `${API_URL}/posts.php?id=${encodeURIComponent(id)}`
+        : `${API_URL}/posts/${encodeURIComponent(id)}`;
       const res = await fetch(endpoint, { method: 'DELETE' });
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {
-      console.warn("Simulando borrado de Blog Post (Modo Demo)");
       return { success: true };
     }
   },
@@ -122,23 +123,22 @@ export const api = {
   // Donation Settings
   async getDonationSettings() {
     try {
-      const endpoint = isDev
-        ? `${API_URL}/settings/donations`
-        : `${API_URL}/settings.php`;
+      const endpoint = usePHP
+        ? `${API_URL}/settings.php`
+        : `${API_URL}/settings/donations`;
       const res = await fetch(endpoint);
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {
-      console.warn("Usando datos de prueba para Ajustes (Modo Demo)");
       return mockSettings;
     }
   },
   
   async saveDonationSettings(settingsData: any) {
     try {
-      const endpoint = isDev
-        ? `${API_URL}/settings/donations`
-        : `${API_URL}/settings.php`;
+      const endpoint = usePHP
+        ? `${API_URL}/settings.php`
+        : `${API_URL}/settings/donations`;
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -147,7 +147,6 @@ export const api = {
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {
-      console.warn("Simulando guardado de Ajustes (Modo Demo)");
       return { success: true };
     }
   },
@@ -159,7 +158,6 @@ export const api = {
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {
-      console.warn("Usando datos de prueba para Mapas (Modo Demo)");
       return mockMapas;
     }
   },
@@ -174,21 +172,19 @@ export const api = {
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {
-      console.warn("Simulando guardado de Mapa (Modo Demo)");
       return { success: true, id: mapaData.id || 'map-id' };
     }
   },
   
   async deleteMapa(id: string) {
     try {
-      const endpoint = isDev
-        ? `${API_URL}/mapas/${encodeURIComponent(id)}`
-        : `${API_URL}/mapas.php?id=${encodeURIComponent(id)}`;
+      const endpoint = usePHP
+        ? `${API_URL}/mapas.php?id=${encodeURIComponent(id)}`
+        : `${API_URL}/mapas/${encodeURIComponent(id)}`;
       const res = await fetch(endpoint, { method: 'DELETE' });
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {
-      console.warn("Simulando borrado de Mapa (Modo Demo)");
       return { success: true };
     }
   }
