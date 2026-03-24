@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { api } from '../../services/api';
+import { api, getFileUrl } from '../../services/api';
 import { ArrowLeft, Save, Image as ImageIcon } from 'lucide-react';
 import ReactQuill, { Quill } from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
@@ -261,7 +261,7 @@ export function AdminBlogEditor() {
 
             {formData.image && (
               <div className="mt-2 relative aspect-video rounded-xl overflow-hidden border border-brand-dark/10 group">
-                <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
+                <img src={getFileUrl(formData.image)} alt="Preview" className="w-full h-full object-cover" />
                 <button
                   type="button"
                   onClick={() => setFormData(prev => ({ ...prev, image: '' }))}

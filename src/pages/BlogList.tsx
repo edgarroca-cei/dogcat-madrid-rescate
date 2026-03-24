@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowRight, Calendar, Search, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { api } from '../services/api';
+import { api, getFileUrl } from '../services/api';
 
 interface BlogPost {
   id: string;
@@ -98,7 +98,7 @@ export function BlogList() {
               >
                 <div className="relative h-48 sm:h-56 lg:h-64 overflow-hidden">
                   <img 
-                    src={post.image} 
+                    src={getFileUrl(post.image)} 
                     alt={post.title} 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
                   />

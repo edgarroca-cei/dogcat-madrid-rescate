@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { api } from '../services/api';
+import { api, getFileUrl } from '../services/api';
 
 interface BlogPost {
   id: string;
@@ -64,7 +64,7 @@ export function Blog() {
               >
                 <div className="relative h-32 sm:h-48 overflow-hidden">
                   <img 
-                    src={story.image} 
+                    src={getFileUrl(story.image)} 
                     alt={story.title} 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                   />

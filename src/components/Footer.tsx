@@ -9,7 +9,7 @@ export function Footer() {
           <div className="flex items-center gap-2">
             <PawPrint className="h-6 w-6 text-brand-green fill-brand-green" />
             <span className="font-bold text-lg tracking-tight text-brand-light">
-              Dogcat Rescate
+              Dogcat Madrid
             </span>
           </div>
           
@@ -21,7 +21,7 @@ export function Footer() {
           </div>
           
           <div className="text-sm text-brand-light/80 text-center md:text-right">
-            &copy; {new Date().getFullYear()} Dogcat Madrid Rescate. <br className="hidden md:block" />
+            &copy; {new Date().getFullYear()} Dogcat Madrid. <br className="hidden md:block" />
             Todos los derechos reservados.
           </div>
         </div>

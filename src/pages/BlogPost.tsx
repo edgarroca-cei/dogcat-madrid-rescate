@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Calendar, User, Clock, ArrowRight } from 'lucide-react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { api } from '../services/api';
+import { api, getFileUrl } from '../services/api';
 
 interface BlogPostData {
   id: string;
@@ -109,7 +109,7 @@ export function BlogPost() {
             <div className="relative aspect-[4/3] w-full max-w-lg mx-auto lg:max-w-none group">
               <div className="absolute inset-0 bg-brand-green rounded-[2rem] transform rotate-3 scale-105 opacity-20 group-hover:rotate-6 transition-transform duration-500"></div>
               <img 
-                src={post.image} 
+                src={getFileUrl(post.image)} 
                 alt={post.title} 
                 className="relative w-full h-full object-cover rounded-[2rem] shadow-xl border-4 border-white"
               />
@@ -204,7 +204,7 @@ export function BlogPost() {
                 >
                   <div className="relative h-48 overflow-hidden">
                     <img 
-                      src={relatedPost.image} 
+                      src={getFileUrl(relatedPost.image)} 
                       alt={relatedPost.title} 
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
                     />

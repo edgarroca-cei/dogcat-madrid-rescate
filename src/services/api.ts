@@ -50,6 +50,19 @@ function url(path: string) {
   return `${API_URL}${path}`;
 }
 
+// Helper para resolver URLs de archivos (especialmente para local dev)
+export function getFileUrl(path: string | undefined) {
+  if (!path) return '';
+  if (path.startsWith('http')) return path;
+  if (path.startsWith('/uploads')) {
+    // En desarrollo local, las imágenes están en el puerto 3001
+    if (isDev) return `http://localhost:3001${path}`;
+    // En producción (Render/Hostinger) son relativas al dominio
+    return path;
+  }
+  return path;
+}
+
 export const api = {
   // Blog Posts
   async getBlogPosts() {
@@ -87,7 +100,9 @@ export const api = {
         body: formData
       });
       if (!res.ok) throw new Error('Backend not found');
-      return await res.json();
+      const data = await res.json();
+      // Aseguramos que la URL sea absoluta si estamos en dev
+      return { url: getFileUrl(data.url) };
     } catch (err) {
       return { url: URL.createObjectURL(file) };
     }
