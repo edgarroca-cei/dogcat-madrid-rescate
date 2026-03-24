@@ -52,15 +52,28 @@ function url(path: string) {
 
 // Helper para resolver URLs de archivos (especialmente para local dev)
 export function getFileUrl(path: string | undefined) {
-  if (!path) return '';
-  if (path.startsWith('http')) return path;
-  if (path.startsWith('/uploads')) {
-    // En desarrollo local, las imágenes están en el puerto 3001
-    if (isDev) return `http://localhost:3001${path}`;
-    // En producción (Render/Hostinger) son relativas al dominio
-    return path;
+  if (!path) return '/dog_cat_hero.png'; // Fallback por defecto cada vez que no hay imagen
+  
+  // Si la base de datos se contaminó con URLs de localhost:3001, las limpiamos para producción
+  if (path.includes('localhost:3001') && !isDev) {
+    path = path.replace('http://localhost:3001', '');
   }
-  return path;
+
+  if (path.startsWith('http')) return path;
+  
+  // Normalizar: asegurar que empiece con /uploads si contiene uploads
+  let normalizedPath = path;
+  if (normalizedPath.includes('uploads/') && !normalizedPath.startsWith('/')) {
+    normalizedPath = '/' + normalizedPath;
+  }
+
+  if (normalizedPath.startsWith('/uploads')) {
+    const finalUrl = isDev ? `http://localhost:3001${normalizedPath}` : normalizedPath;
+    if (isDev) console.log(`Resolviendo imagen: ${path} -> ${finalUrl}`);
+    return finalUrl;
+  }
+  
+  return path || '/dog_cat_hero.png';
 }
 
 export const api = {
@@ -100,9 +113,8 @@ export const api = {
         body: formData
       });
       if (!res.ok) throw new Error('Backend not found');
-      const data = await res.json();
-      // Aseguramos que la URL sea absoluta si estamos en dev
-      return { url: getFileUrl(data.url) };
+      // Aseguramos que devolvemos el objeto con la URL del servidor
+      return await res.json();
     } catch (err) {
       return { url: URL.createObjectURL(file) };
     }
