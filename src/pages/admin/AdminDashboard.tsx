@@ -122,8 +122,29 @@ export function AdminDashboard() {
   const [dataActionLoading, setDataActionLoading] = useState(false);
   const [dataMessage, setDataMessage] = useState({ type: '', text: '' });
 
-  const handleExport = () => {
-    window.location.href = api.getBackupUrl();
+  const handleExport = async () => {
+    setDataActionLoading(true);
+    setDataMessage({ type: '', text: '' });
+    try {
+      const res = await fetch(api.getBackupUrl());
+      if (!res.ok) throw new Error('Error al descargar');
+      
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `backup-dogcat-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      
+      setDataMessage({ type: 'success', text: 'Copia de seguridad descargada correctamente.' });
+    } catch (err) {
+      setDataMessage({ type: 'error', text: 'Error al generar la copia de seguridad.' });
+    } finally {
+      setDataActionLoading(false);
+    }
   };
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {

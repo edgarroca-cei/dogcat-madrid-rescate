@@ -1,90 +1,172 @@
 {
-  "posts": [],
-  "settings": [],
+  "posts": [
+    {
+      "id": "3jvzqy6ff",
+      "title": "Rescate nocturno en el centro",
+      "slug": "rescate-nocturno-centro",
+      "excerpt": "Una noche intensa ayudando a un cachorro atrapado en una obra. Gracias al aviso de un vecino pudimos actuar rápido.",
+      "content": "<p>Fue una noche larga pero valió la pena. Recibimos el aviso a las 2 AM sobre un cachorro que lloraba en una zona de obras vallada. Tras coordinarnos con la policía local, pudimos acceder y rescatar al pequeño Toby, que ahora descansa seguro en nuestra casa de acogida.</p>",
+      "image": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=1200",
+      "color": "bg-brand-cream text-brand-dark",
+      "date": "2026-03-25T10:03:54.574Z",
+      "author": "Equipo DOGCAT",
+      "createdAt": "2026-03-25T10:03:54.614Z"
+    },
+    {
+      "id": "kg28uiepp",
+      "title": "Nueva colonia gestionada en Vallecas",
+      "slug": "colonia-vallecas-gestion",
+      "excerpt": "Gracias a los voluntarios hemos comenzado la gestión CER en una nueva zona con más de 20 felinos.",
+      "content": "<p>La expansión de nuestro programa CER continúa. Esta semana hemos empezado el censo y las primeras capturas en una zona industrial de Vallecas. Es un reto grande pero contamos con un equipo increíble de alimentadores autorizados.</p>",
+      "image": "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=1200",
+      "color": "bg-brand-green text-brand-dark",
+      "date": "2026-03-25T10:03:54.574Z",
+      "author": "Unidad CER",
+      "createdAt": "2026-03-25T10:03:54.628Z"
+    },
+    {
+      "id": "w7bkaq86u",
+      "title": "Consejos para el calor con tus mascotas",
+      "slug": "consejos-calor-mascotas",
+      "excerpt": "Cómo mantener a tus perros y gatos frescos este verano. Evita golpes de calor con estas pautas sencillas.",
+      "content": "<p>Con la llegada de la ola de calor, es vital recordar: nunca dejes a tu mascota en el coche, mantén agua fresca siempre disponible y evita los paseos en las horas centrales del día por el asfalto caliente.</p>",
+      "image": "https://images.unsplash.com/photo-1535930891776-0c2dfb7fda1a?auto=format&fit=crop&q=80&w=1200",
+      "color": "bg-brand-light text-brand-dark",
+      "date": "2026-03-25T10:03:54.574Z",
+      "author": "Salud Animal",
+      "createdAt": "2026-03-25T10:03:54.633Z"
+    },
+    {
+      "id": "9okq5sudd",
+      "title": "Entrevista con nuestra veterinaria",
+      "slug": "entrevista-veterinaria-dogcat",
+      "excerpt": "Hablamos sobre la importancia de las revisiones anuales y la vacunación preventiva en animales rescatados.",
+      "content": "<p>Hoy charlamos con Ana, nuestra veterinaria colaboradora, sobre los retos de salud más comunes que encontramos en la calle y cómo una detección temprana puede salvar vidas.</p>",
+      "image": "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&q=80&w=1200",
+      "color": "bg-brand-cream text-brand-dark",
+      "date": "2026-03-25T10:03:54.574Z",
+      "author": "Redacción",
+      "createdAt": "2026-03-25T10:03:54.636Z"
+    },
+    {
+      "id": "om2kt2pf0",
+      "title": "Final feliz para Luna",
+      "slug": "final-feliz-luna",
+      "excerpt": "Tras 6 meses en el refugio, Luna por fin ha encontrado su hogar definitivo con una familia maravillosa.",
+      "content": "<p>No hay nada que nos llene más que ver estas fotos de Luna durmiendo en su nuevo sofá. Después de su largo proceso de recuperación, por fin tiene la estabilidad y el amor que siempre mereció.</p>",
+      "image": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&q=80&w=1200",
+      "color": "bg-brand-green text-brand-dark",
+      "date": "2026-03-25T10:03:54.574Z",
+      "author": "Adopciones",
+      "createdAt": "2026-03-25T10:03:54.638Z"
+    }
+  ],
+  "settings": [
+    {
+      "id": "donations",
+      "paypalLink": "https://www.paypal.com/paypalme/dogcatmadrid",
+      "bizumNumber": "+34 687 30 96 39",
+      "bizumConcept": "Donativo DOGCAT",
+      "updatedAt": "2026-03-25T10:03:02.527Z"
+    }
+  ],
   "mapas": [
     {
-      "id": "m1",
+      "id": "x45pbbs9w",
       "title": "Subvenciones 2025",
       "mid": "1uN0B5g0B0Ov_e7aO-LRi0y1jCudun5o",
       "description": "Mapa de subvenciones para entidades locales en la convocatoria 2025.",
       "icon": "Map",
-      "order": 1
+      "order": 1,
+      "createdAt": "2026-03-25T10:03:10.525Z"
     },
     {
-      "id": "m2",
+      "id": "andq5yxmd",
       "title": "Subvención Estatal Madrid",
       "mid": "15nYt5nqHaz7tlOCxRHZWDEwkjJwelbs",
       "description": "Mapa específico de subvenciones estatales para entidades locales en Madrid.",
       "icon": "Building2",
-      "order": 2
+      "order": 2,
+      "createdAt": "2026-03-25T10:03:10.533Z"
     },
     {
-      "id": "m3",
+      "id": "rnbs6cuoy",
       "title": "Licitaciones y Contratos",
       "mid": "1q6X-VYbUSUqpDXadtFH6Qw_Uz_ff_UQ",
       "description": "Mapa de licitaciones y contratos menores relacionados con colonias felinas.",
       "icon": "FileText",
-      "order": 3
+      "order": 3,
+      "createdAt": "2026-03-25T10:03:10.537Z"
     },
     {
-      "id": "m4",
+      "id": "0dn2g6ts8",
+      "title": "Gatos Perdidos Madrid",
+      "mid": "1J9bg7ZYkPDy7unW2ee77Q4FGlKK2tVR6",
+      "description": "Registro histórico de gatos perdidos en la Comunidad de Madrid (2014-2020).",
+      "icon": "Search",
+      "order": 4,
+      "createdAt": "2026-03-25T10:03:10.540Z"
+    },
+    {
+      "id": "39bu9l4jp",
       "title": "Clínicas y Hospitales Veterinarios",
       "mid": "1cp8NLo2PU9w6Aa4si3Uc-yrvsXE-VEs",
       "description": "Centros veterinarios y hospitales de urgencia 24h en Madrid.",
       "icon": "Hospital",
-      "order": 4
+      "order": 5,
+      "createdAt": "2026-03-25T10:03:10.543Z"
     }
   ],
   "site_content": [
     {
       "id": "home_sections",
       "content": "{\"order\":[\"Hero\",\"Colonias\",\"Proyecto\",\"Blog\"],\"hidden\":[]}",
-      "updatedAt": "2026-03-25T00:55:54.138Z"
+      "updatedAt": "2026-03-25T10:03:45.962Z"
     },
     {
       "id": "hero",
       "content": "{\"badge\":\"ONG de rescate animal en Madrid\",\"title\":\"Tu donativo tiene un impacto directo y real\",\"text\":\"Nuestra labor se desarrolla en los distintos distritos de Madrid, respaldando a quienes velan por el bienestar felino los 365 días del año. Tu aportación se transforma de manera inmediata en alimento, atención veterinaria de urgencia y material de captura ético.\",\"buttonText\":\"Donar ahora\",\"image\":\"/dog_cat_hero.png\"}",
-      "updatedAt": "2026-03-25T00:55:54.149Z"
+      "updatedAt": "2026-03-25T10:03:45.970Z"
     },
     {
       "id": "colonias_section",
       "content": "{\"badge\":\"Donaciones y recursos\",\"title\":\"Ayuda a las colonias felinas\",\"text\":\"Gestionamos colonias mediante el método C.E.R. (Captura, Esterilización y Retorno). Tu aportación mensual o puntual se destina íntegramente a cubrir sus necesidades básicas:\",\"image\":\"/cat_colony.jpg\"}",
-      "updatedAt": "2026-03-25T00:55:54.151Z"
+      "updatedAt": "2026-03-25T10:03:45.972Z"
     },
     {
       "id": "proyecto_section",
       "content": "{\"badge\":\"\",\"title\":\"Proyecto Dogcat Rescate\",\"text\":\"Buscamos alianzas para expandir nuestra infraestructura y llevar nuestra capacidad de respuesta al siguiente nivel.\",\"buttonText\":\"Ver detalles proyecto\",\"image\":\"https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=1000\",\"f1_icon\":\"Truck\",\"f1_title\":\"Flota de rescate\",\"f1_text\":\"Vehículos adaptados para transporte seguro y material de captura.\",\"f2_icon\":\"House-heart\",\"f2_title\":\"Infraestructura\",\"f2_text\":\"Instalaciones temporales para cuarentenas y recuperación.\",\"f3_icon\":\"Handshake\",\"f3_title\":\"Alianzas corporativas\",\"f3_text\":\"Colaboraciones mediante patrocinios, cesiones de material o donaciones.\"}",
-      "updatedAt": "2026-03-25T00:55:54.151Z"
+      "updatedAt": "2026-03-25T10:03:45.973Z"
     },
     {
       "id": "colonias_page",
       "content": "{\"title\":\"Intervención y apoyo para las colonias felinas de Madrid\",\"text\":\"En DOGCAT Madrid centramos nuestros esfuerzos en el terreno, respaldando de forma integral a las gestoras de colonias.\",\"image\":\"/cat_colony.jpg\",\"cer_title\":\"Nuestro apoyo al método C.E.R.\",\"cer_text\":\"Facilitamos los recursos necesarios para que las gestoras de Madrid puedan aplicar el método C.E.R. (Captura, Esterilización y Retorno) con garantías de éxito.\",\"cer_step1_title\":\"Captura y material\",\"cer_step1_text\":\"Donamos jaulas trampa y transportines especializados para que el proceso de captura sea seguro y respetuoso con el animal.\",\"cer_step1_icon\":\"C\",\"cer_step2_title\":\"Esterilización y veterinaria\",\"cer_step2_text\":\"Abonamos directamente las facturas de esterilización, vacunación e identificación en centros clínicos colaboradores.\",\"cer_step2_icon\":\"E\",\"cer_step3_title\":\"Retorno y alimentación\",\"cer_step3_text\":\"Tras el retorno a su colonia, seguimos apoyando a las alimentadoras mediante la donación periódica de pienso y comida húmeda.\",\"cer_step3_icon\":\"R\",\"donations_title\":\"¿A dónde va tu donativo?\",\"donations_text\":\"No recibimos ayudas públicas suficientes. Dependemos de la solidaridad de personas como tú.\"}",
-      "updatedAt": "2026-03-25T00:55:54.152Z"
+      "updatedAt": "2026-03-25T10:03:45.974Z"
     },
     {
       "id": "proyecto_page",
-      "content": "{\"title\":\"Proyecto Dogcat Rescate\",\"text\":\"Un proyecto integral de bienestar y protección animal diseñado para dar respuesta profesional a emergencias.\",\"image\":\"https://images.pexels.com/photos/9000185/pexels-photo-9000185.jpeg?auto=compress&cs=tinysrgb&w=1200\",\"fleet_title\":\"Flota de rescate: el motor del proyecto\",\"fleet_text\":\"El diseño del proyecto integra vehículos especialmente rotulados y adaptados para el transporte seguro de animales.\",\"areas_title\":\"Nuestras áreas de actuación\",\"areas_text\":\"Nuestra estructura, unidades y protocolos están completamente definidos y listos para implementarse.\"}",
-      "updatedAt": "2026-03-25T00:55:54.152Z"
+      "content": "{\"title\":\"Proyecto Dogcat Rescate\",\"text\":\"Un proyecto integral de bienestar y protección animal diseñado para dar respuesta profesional a emergencias.\",\"image\":\"https://images.pexels.com/photos/9000185/pexels-photo-9000185.jpeg?auto=compress&cs=tinysrgb&w=1200\",\"fleet_title\":\"Flota de rescate: el futuro motor del proyecto\",\"fleet_text\":\"El diseño del proyecto integra vehículos especialmente rotulados y adaptados para el transporte seguro de animales.\",\"areas_title\":\"Los objetivos del proyecto\",\"areas_text\":\"Nuestra estructura, unidades y protocolos están completamente definidos y listos para implementarse en cuanto obtengamos la financiación necesaria.\"}",
+      "updatedAt": "2026-03-25T10:03:45.975Z"
     },
     {
       "id": "blog_page",
       "content": "{\"title\":\"Noticias y Actualidad\",\"text\":\"Sigue de cerca nuestra labor, rescates y casos de éxito del día a día.\",\"image\":\"https://images.unsplash.com/photo-1573865526739-10659fec78a5?q=80&w=2000\"}",
-      "updatedAt": "2026-03-25T00:55:54.163Z"
+      "updatedAt": "2026-03-25T10:03:45.977Z"
     },
     {
       "id": "recursos_page",
-      "content": "{\"title\":\"Recursos para Gestoras\",\"text\":\"Ponemos a tu disposición guías, normativas y herramientas para facilitar la gestión ética de colonias.\",\"image\":\"https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=2000\"}",
-      "updatedAt": "2026-03-25T00:55:54.163Z"
+      "content": "{\"title\":\"Recursos para Gestoras\",\"text\":\"Ponemos a tu disposición herramientas para facilitar la gestión ética de colonias.\",\"image\":\"https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=2000\"}",
+      "updatedAt": "2026-03-25T10:03:45.976Z"
     },
     {
       "id": "contacto_page",
       "content": "{\"title\":\"Contacta con nosotros\",\"text\":\"¿Tienes dudas sobre cómo colaborar o necesitas asesoramiento técnico? Estamos aquí para ayudarte.\",\"image\":\"https://images.unsplash.com/photo-1495360010541-f48722b34f7d?q=80&w=2000\"}",
-      "updatedAt": "2026-03-25T00:55:54.166Z"
+      "updatedAt": "2026-03-25T10:03:45.978Z"
     },
     {
       "id": "general",
       "content": "{\"siteName\":\"DOGCAT Madrid\",\"donationButton\":\"Donar ahora\",\"footerCopyright\":\"Todos los derechos reservados.\",\"siteLogo\":\"\"}",
-      "updatedAt": "2026-03-25T00:55:54.167Z"
+      "updatedAt": "2026-03-25T10:03:45.980Z"
     }
   ]
 }

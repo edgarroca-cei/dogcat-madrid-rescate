@@ -236,15 +236,18 @@ app.delete('/api/mapas/:id', async (req, res) => {
 
 // --- BACKUP & RESTORE ---
 app.get('/api/admin/backup', (req, res) => {
+  console.log('Solicitud de backup recibida');
   const dbPath = path.join(__dirname, '../database.json');
   if (fs.existsSync(dbPath)) {
     res.download(dbPath, 'backup-dogcat.json');
   } else {
+    console.error('Base de datos no encontrada en:', dbPath);
     res.status(404).json({ error: 'Archivo de base de datos no encontrado' });
   }
 });
 
 app.post('/api/admin/restore', upload.single('database'), (req, res) => {
+  console.log('Solicitud de restauración recibida');
   if (!req.file) {
     return res.status(400).json({ error: 'No se ha subido ningún archivo' });
   }
