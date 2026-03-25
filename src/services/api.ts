@@ -186,6 +186,31 @@ export const api = {
     }
   },
 
+  // --- MULTIMEDIA ---
+  async getMedia() {
+    try {
+      const res = await fetch(url('/media'));
+      if (!res.ok) throw new Error('Error al obtener la galería');
+      return res.json();
+    } catch (err) {
+      console.error("Error fetching media:", err);
+      return []; // Return empty array on error
+    }
+  },
+
+  async deleteMedia(filename: string) {
+    try {
+      const res = await fetch(url(`/media/${filename}`), {
+        method: 'DELETE',
+      });
+      if (!res.ok) throw new Error('Error al eliminar el archivo');
+      return res.json();
+    } catch (err) {
+      console.error("Error deleting media:", err);
+      throw err; // Re-throw to be handled by caller
+    }
+  },
+
   // Mapas
   async getMapas() {
     try {

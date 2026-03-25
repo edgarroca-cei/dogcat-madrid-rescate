@@ -368,6 +368,47 @@ if (fs.existsSync(distPath)) {
     }
   });
 
+// --- MULTIMEDIA (Media Gallery) ---
+  app.get('/api/media', (req, res) => {
+    try {
+      const files = fs.readdirSync(uploadsDir);
+      const media = files.map(filename => {
+        const filePath = path.join(uploadsDir, filename);
+        const stats = fs.statSync(filePath);
+        return {
+          filename,
+          url: `/uploads/${filename}`,
+          size: stats.size,
+          mtime: stats.mtime
+        };
+      }).sort((a, b) => b.mtime - a.mtime);
+      
+      res.json(media);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.delete('/api/media/:filename', (req, res) => {
+    try {
+      const filename = req.params.filename;
+      // Evitar ataques de path traversal
+      if (filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+        return res.status(400).json({ error: 'Nombre de archivo no válido' });
+      }
+      
+      const filePath = path.join(uploadsDir, filename);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        res.json({ success: true });
+      } else {
+        res.status(404).json({ error: 'Archivo no encontrado' });
+      }
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   // API 404 handler - ensures API calls don't get the SPA's index.html
   app.all('/api/*', (req, res) => {
     res.status(404).json({ error: `Ruta API no encontrada: ${req.method} ${req.url}` });

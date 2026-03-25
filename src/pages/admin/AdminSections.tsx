@@ -85,7 +85,8 @@ const DEFAULTS: any = {
   general: {
     siteName: 'DOGCAT Madrid',
     donationButton: 'Donar ahora',
-    footerCopyright: 'Todos los derechos reservados.'
+    footerCopyright: 'Todos los derechos reservados.',
+    contact_email_notifications: 'dogcatmadrid@gmail.com'
   }
 };
 
@@ -550,15 +551,24 @@ export function AdminSections() {
                        {renderField(id, 'donationButton', 'Texto Botón Donar', 'text', CheckCircle2, 20)}
                        {renderField(id, 'footerCopyright', 'Texto Copyright Footer', 'text', FileText, 80)}
                     </div>
+                    
+                    <h3 className="text-xs font-black text-brand-green uppercase tracking-[0.2em] border-b border-brand-light/10 pb-2 pt-4">Notificaciones por Email</h3>
+                    <div className="bg-white/50 p-6 rounded-3xl border border-brand-light/10 space-y-6">
+                       {renderField(id, 'contact_email_notifications', 'Email para recibir mensajes del formulario', 'text', Mail, 60)}
+                       <p className="text-[10px] text-brand-dark/40 font-bold px-1 italic">
+                         Los mensajes de los clientes se enviarán a esta dirección usando FormSubmit (gratuito).
+                       </p>
+                    </div>
+
                     <h3 className="text-xs font-black text-brand-green uppercase tracking-[0.2em] border-b border-brand-light/10 pb-2 pt-4">Redes Sociales (Footer)</h3>
                     <div className="bg-white/50 p-6 rounded-3xl border border-brand-light/10 space-y-6">
                        {renderField(id, 'socialFacebook', 'URL de Facebook', 'text', Globe, 200)}
                        {renderField(id, 'socialInstagram', 'URL de Instagram', 'text', Globe, 200)}
                     </div>
-                 </div>
-              </div>
-           </div>
-        )}
+                  </div>
+               </div>
+            </div>
+         )}
 
         {/* 1.5. Contacto Page — Contact Data & Social */}
         {contactoSpecialBlock}
@@ -609,9 +619,9 @@ export function AdminSections() {
                         {renderField(id, `cer_step${step}_text`, 'Descripción Detallada', 'textarea', Edit3, 150)}
                       </div>
                     ))}
-                  </div>
                </div>
             </div>
+         </div>
          )}
 
          {/* 3. Colonias Home Section (Needs Grid) */}

@@ -21,6 +21,7 @@ import { AdminBlogEditor } from './pages/admin/AdminBlogEditor';
 import { AdminMapas } from './pages/admin/AdminMapas';
 import { AdminDonaciones } from './pages/admin/AdminDonaciones';
 import { AdminSections } from './pages/admin/AdminSections';
+import { AdminMedia } from './pages/admin/AdminMedia';
 import { DonationModal } from './components/DonationModal';
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
                 <Route path="mapas" element={<AdminMapas />} />
                 <Route path="donaciones" element={<AdminDonaciones />} />
                 <Route path="secciones" element={<AdminSections />} />
+                <Route path="media" element={<AdminMedia />} />
                 <Route path="blog/new" element={<AdminBlogEditor />} />
                 <Route path="blog/edit/:id" element={<AdminBlogEditor />} />
               </Route>
