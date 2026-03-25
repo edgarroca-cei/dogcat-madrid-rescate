@@ -219,9 +219,9 @@ export function AdminSections() {
   // Default contents for Proyecto Page to show when database is empty
   const DYNAMIC_DEFAULTS: Record<string, string> = {
     title: 'Proyecto Dogcat Rescate',
-    text: 'Un proyecto integral de bienestar y protección animal diseñado para dar respuesta profesional a emergencias.',
+    text: 'Un proyecto técnico de bienestar animal diseñado para dar respuesta profesional a emergencias. Buscamos los recursos para hacerlo realidad.',
     areas_title: 'Nuestras áreas de actuación',
-    areas_text: 'Nuestra estructura, unidades y protocolos están completamente definidos.',
+    areas_text: 'Nuestra estructura y protocolos están definidos y listos para implementarse en cuanto dispongamos de la financiación necesaria.',
     fleet_title: 'Flota de rescate: el motor del proyecto',
     fleet_text: 'El diseño del proyecto integra vehículos especialmente rotulados y adaptados.',
     fleet_extra_text: 'Su equipamiento está planteado para ofrecer una primera respuesta en el lugar de la emergencia.',
@@ -229,7 +229,7 @@ export function AdminSections() {
     fleet_b2: 'Equipamiento de captura profesional',
     fleet_b3: 'Rotulación oficial de DOGCAT Madrid',
     cta_title: 'Ayúdanos a hacerlo realidad',
-    cta_text: 'Buscamos voluntarios, instituciones y empresas colaboradoras.',
+    cta_text: 'Este proyecto es un concepto técnico listo para ejecutarse. Buscamos el apoyo y la financiación necesaria para poner en marcha estas unidades y empezar a salvar vidas.',
     area1_title: 'Emergencias y rescates',
     area1_text: 'Intervención rápida y profesional en situaciones de riesgo.',
     area1_icon: 'ShieldAlert',
@@ -356,6 +356,33 @@ export function AdminSections() {
       contacto_page: [
         { id: 'title', label: 'Título', type: 'text', max: 40 },
         { id: 'text', label: 'Resumen / Texto', type: 'textarea', max: 120 }
+      ],
+      proyecto_page: [
+        { id: 'badge', label: 'Etiqueta / Badge', type: 'text', max: 40 },
+        { id: 'title', label: 'Título', type: 'text', max: 80 },
+        { id: 'text', label: 'Descripción / Texto', type: 'textarea', max: 350 },
+        { id: 'areas_title', label: 'Título Áreas', type: 'text', max: 80 },
+        { id: 'areas_text', label: 'Texto Áreas', type: 'textarea', max: 350 },
+        { id: 'area1_title', label: 'Área 1: Título', type: 'text', max: 50 },
+        { id: 'area1_text', label: 'Área 1: Texto', type: 'textarea', max: 150 },
+        { id: 'area1_icon', label: 'Área 1: Icono', type: 'text', max: 25 },
+        { id: 'area2_title', label: 'Área 2: Título', type: 'text', max: 50 },
+        { id: 'area2_text', label: 'Área 2: Texto', type: 'textarea', max: 150 },
+        { id: 'area2_icon', label: 'Área 2: Icono', type: 'text', max: 25 },
+        { id: 'area3_title', label: 'Área 3: Título', type: 'text', max: 50 },
+        { id: 'area3_text', label: 'Área 3: Texto', type: 'textarea', max: 150 },
+        { id: 'area3_icon', label: 'Área 3: Icono', type: 'text', max: 25 },
+        { id: 'fleet_title', label: 'Título Flota', type: 'text', max: 80 },
+        { id: 'fleet_text', label: 'Texto Flota', type: 'textarea', max: 350 },
+        { id: 'fleet_extra_text', label: 'Texto Extra Flota', type: 'textarea', max: 350 },
+        { id: 'fleet_b1', label: 'Punto 1 Flota', type: 'text', max: 60 },
+        { id: 'fleet_b2', label: 'Punto 2 Flota', type: 'text', max: 60 },
+        { id: 'fleet_b3', label: 'Punto 3 Flota', type: 'text', max: 60 },
+        { id: 'cta_title', label: 'Título CTA', type: 'text', max: 80 },
+        { id: 'cta_text', label: 'Texto CTA', type: 'textarea', max: 350 },
+        { id: 'cta_email', label: 'Email Proyecto', type: 'text', max: 80 },
+        { id: 'cta_phone', label: 'Teléfono Proyecto', type: 'text', max: 20 },
+        { id: 'cta_whatsapp', label: 'WhatsApp Proyecto', type: 'text', max: 20 }
       ]
     };
 
@@ -382,13 +409,21 @@ export function AdminSections() {
       </div>
     ) : null;
 
-    // Default configuration for other sections if not specified
     const defaultFields = [
       { id: 'badge', label: 'Etiqueta / Badge', type: 'text', max: 40 },
       { id: 'title', label: 'Título', type: 'text', max: 80 },
       { id: 'buttonText', label: 'Texto del Botón', type: 'text', max: 30 },
       { id: 'text', label: 'Descripción / Texto', type: 'textarea', max: 350 }
     ];
+
+    if (id === 'proyecto_page') {
+      defaultFields.push(
+        { id: 'cta_email', label: 'Email de Contacto (Proyecto)', type: 'text', max: 80 },
+        { id: 'cta_phone', label: 'Teléfono (Proyecto)', type: 'text', max: 20 },
+        { id: 'cta_whatsapp', label: 'WhatsApp (Proyecto)', type: 'text', max: 20 },
+        { id: 'fleet_extra_text', label: 'Texto Extra Flota', type: 'textarea', max: 350 }
+      );
+    }
 
     const definedFields = standardFieldsConfig[id] || defaultFields;
     

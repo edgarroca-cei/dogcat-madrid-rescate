@@ -8,7 +8,7 @@ export function Proyecto() {
   const proyectoContent = getContent('proyecto_section', {
     badge: 'Visión integral',
     title: 'Proyecto Dogcat Rescate',
-    text: 'Buscamos alianzas para expandir nuestra infraestructura y llevar nuestra capacidad de respuesta al siguiente nivel.',
+    text: 'Un proyecto técnico de bienestar animal diseñado para dar respuesta profesional a emergencias. Buscamos el apoyo y los recursos para hacerlo realidad.',
     buttonText: 'Ver detalles proyecto',
     f1_icon: 'Truck',
     f1_title: 'Flota de rescate',

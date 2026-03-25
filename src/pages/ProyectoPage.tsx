@@ -8,9 +8,9 @@ export function ProyectoPage() {
   const { getContent } = useContent();
   const pageContent = getContent('proyecto_page', {
     title: 'Proyecto Dogcat Rescate',
-    text: 'Un proyecto integral de bienestar y protección animal diseñado para dar respuesta profesional a emergencias. Con la estructura y protocolos ya definidos, buscamos los recursos y el apoyo institucional para ponerlo en marcha.',
+    text: 'Un proyecto técnico de bienestar animal diseñado para dar respuesta profesional a emergencias. Buscamos los recursos para hacerlo realidad.',
     areas_title: 'Nuestras áreas de actuación',
-    areas_text: 'Nuestra estructura, unidades y protocolos están completamente definidos y listos para implementarse en cuanto dispongamos de la financiación necesaria.',
+    areas_text: 'Nuestra estructura y protocolos están definidos y listos para implementarse en cuanto dispongamos de la financiación necesaria.',
     fleet_title: 'Flota de rescate: el motor del proyecto',
     fleet_text: 'El diseño del proyecto integra vehículos especialmente rotulados y adaptados para el transporte seguro de animales y material de rescate. Estas unidades móviles son el eje operativo de nuestras intervenciones.',
     fleet_extra_text: 'Su equipamiento está planteado para ofrecer una primera respuesta en el lugar de la emergencia y asegurar que el traslado a las clínicas veterinarias se realice en condiciones óptimas de seguridad y bienestar.',
@@ -18,7 +18,10 @@ export function ProyectoPage() {
     fleet_b2: 'Equipamiento de captura profesional',
     fleet_b3: 'Rotulación oficial de DOGCAT Madrid',
     cta_title: 'Ayúdanos a hacerlo realidad',
-    cta_text: 'Buscamos voluntarios, instituciones y empresas colaboradoras que quieran aportar los recursos necesarios para poner en marcha este proyecto vital.',
+    cta_text: 'Este proyecto es un concepto técnico listo para ejecutarse. Buscamos el apoyo y la financiación necesaria para poner en marcha estas unidades y empezar a salvar vidas.',
+    cta_email: 'dogcatmadrid@gmail.com',
+    cta_phone: '687309639',
+    cta_whatsapp: '34687309639',
     area1_title: 'Emergencias y rescates',
     area1_text: 'Intervención rápida y profesional en situaciones de riesgo, accidentes o abandono, garantizando la seguridad del animal.',
     area1_icon: 'ShieldAlert',
