@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { run, get, all } from './db.js';
+import { run, get, all, reload } from './db.js';
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
@@ -271,7 +271,7 @@ app.get('/api/admin/backup', (req, res) => {
   }
 });
 
-app.post('/api/admin/restore', upload.single('database'), (req, res) => {
+app.post('/api/admin/restore', upload.single('database'), async (req, res) => {
   console.log('Solicitud de restauración recibida');
   if (!req.file) {
     return res.status(400).json({ error: 'No se ha subido ningún archivo' });
@@ -286,10 +286,13 @@ app.post('/api/admin/restore', upload.single('database'), (req, res) => {
     // Mover el archivo subido a la ubicación de la base de datos
     fs.copyFileSync(req.file.path, dbPath);
     
+    // Recargar en memoria
+    await reload();
+
     // Limpiar el archivo temporal
     fs.unlinkSync(req.file.path);
 
-    res.json({ success: true, message: 'Base de datos restaurada correctamente. Reinicia para ver cambios.' });
+    res.json({ success: true, message: 'Base de datos restaurada correctamente.' });
   } catch (err) {
     console.error('Error en restauración:', err);
     // Loguear el inicio del contenido para ver qué estamos recibiendo

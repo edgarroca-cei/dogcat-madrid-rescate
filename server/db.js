@@ -105,4 +105,19 @@ export async function all(sql, params = []) {
   return [];
 }
 
-export default { run, get, all };
+export async function reload() {
+  if (existsSync(dbPath)) {
+    try {
+      const content = readFileSync(dbPath, 'utf-8');
+      data = JSON.parse(content);
+      console.log('Base de datos recargada correctamente');
+      return true;
+    } catch (e) {
+      console.error('Error al recargar JSON DB:', e);
+      return false;
+    }
+  }
+  return false;
+}
+
+export default { run, get, all, reload };
