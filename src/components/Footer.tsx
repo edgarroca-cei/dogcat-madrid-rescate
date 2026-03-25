@@ -1,4 +1,4 @@
-import { PawPrint } from 'lucide-react';
+import { PawPrint, Facebook, Instagram } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useContent } from '../contexts/ContentContext';
@@ -8,7 +8,9 @@ export function Footer() {
   const pageContent = getContent('general', {
     siteName: 'Dogcat Madrid',
     footerCopyright: 'Todos los derechos reservados.',
-    siteIcon: 'PawPrint'
+    siteIcon: 'PawPrint',
+    socialFacebook: '',
+    socialInstagram: ''
   });
 
   // Brand Identity Helper
@@ -42,6 +44,22 @@ export function Footer() {
               {pageContent.siteName}
             </span>
           </div>
+          
+          {/* Social Links */}
+          {(pageContent.socialFacebook || pageContent.socialInstagram) && (
+            <div className="flex items-center gap-3">
+              {pageContent.socialFacebook && (
+                <a href={pageContent.socialFacebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-brand-light/10 text-brand-light/70 rounded-full flex items-center justify-center hover:bg-brand-green hover:text-brand-dark transition-all hover:-translate-y-0.5">
+                  <Facebook className="w-4 h-4" />
+                </a>
+              )}
+              {pageContent.socialInstagram && (
+                <a href={pageContent.socialInstagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-brand-light/10 text-brand-light/70 rounded-full flex items-center justify-center hover:bg-brand-green hover:text-brand-dark transition-all hover:-translate-y-0.5">
+                  <Instagram className="w-4 h-4" />
+                </a>
+              )}
+            </div>
+          )}
           
           <div className="flex flex-wrap justify-center gap-6 text-sm text-brand-light/80">
             <Link to="/aviso-legal" className="hover:text-brand-green transition-colors">Aviso legal</Link>

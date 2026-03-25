@@ -259,12 +259,19 @@ export function AdminSections() {
     proyecto_image: '/dog_cat_hero.png',
     siteName: 'DOGCAT Madrid',
     siteTitle: 'DOGCAT Madrid | Rescate y Bienestar Animal',
-    siteIcon: 'PawPrint'
+    siteIcon: 'PawPrint',
+    contact_email: 'dogcatmadrid@gmail.com',
+    contact_phone: '687309639',
+    contact_whatsapp: '34687309639',
+    contact_facebook: 'https://www.facebook.com/people/Fer-Hidalgo-ayudas-colonias-felinas-Dogcat-Madrid/100077417127229/',
+    contact_instagram: '',
+    socialFacebook: 'https://www.facebook.com/people/Fer-Hidalgo-ayudas-colonias-felinas-Dogcat-Madrid/100077417127229/',
+    socialInstagram: ''
   };
 
   const renderField = (id: string, field: string, label: string, type: 'text' | 'textarea' = 'text', icon: any = Type, max: number = 100) => {
     const data = localContent[id] || {};
-    const isDynamic = ['proyecto_page', 'proyecto_section', 'colonias_page', 'colonias_section', 'general'].includes(id);
+    const isDynamic = ['proyecto_page', 'proyecto_section', 'colonias_page', 'colonias_section', 'general', 'contacto_page'].includes(id);
     const value = data[field] !== undefined ? data[field] : (isDynamic ? (DYNAMIC_DEFAULTS[field] || '') : '');
     const Icon = icon;
     const length = value.length;
@@ -352,6 +359,29 @@ export function AdminSections() {
       ]
     };
 
+    // Special contact data fields for the contacto_page section
+    const contactoSpecialBlock = (id === 'contacto_page') ? (
+      <div className="pt-10 border-t border-brand-light/10 space-y-12 text-brand-dark anim-fade-in">
+         <div className="grid lg:grid-cols-2 gap-10">
+            <div className="space-y-6">
+              <h3 className="text-xs font-black text-brand-green uppercase tracking-[0.2em] border-b border-brand-light/10 pb-2">Datos de Contacto</h3>
+              <div className="bg-white/50 p-6 rounded-3xl border border-brand-light/10 space-y-6">
+                {renderField(id, 'contact_email', 'Email de contacto', 'text', Mail, 60)}
+                {renderField(id, 'contact_phone', 'Teléfono (sin prefijo)', 'text', Phone, 15)}
+                {renderField(id, 'contact_whatsapp', 'WhatsApp (con prefijo país, ej: 34...)', 'text', MessageCircle, 20)}
+              </div>
+            </div>
+            <div className="space-y-6">
+              <h3 className="text-xs font-black text-brand-green uppercase tracking-[0.2em] border-b border-brand-light/10 pb-2">Redes Sociales</h3>
+              <div className="bg-white/50 p-6 rounded-3xl border border-brand-light/10 space-y-6">
+                {renderField(id, 'contact_facebook', 'URL de Facebook', 'text', Globe, 200)}
+                {renderField(id, 'contact_instagram', 'URL de Instagram', 'text', Globe, 200)}
+              </div>
+            </div>
+         </div>
+      </div>
+    ) : null;
+
     // Default configuration for other sections if not specified
     const defaultFields = [
       { id: 'badge', label: 'Etiqueta / Badge', type: 'text', max: 40 },
@@ -394,7 +424,7 @@ export function AdminSections() {
           )}
 
           {/* Right: Main Image Uploader */}
-          {(data.image !== undefined || ['proyecto_page', 'proyecto_section', 'colonias_page', 'colonias_section', 'general'].includes(id)) && (
+          {(data.image !== undefined || ['proyecto_page', 'proyecto_section', 'colonias_page', 'colonias_section', 'general', 'contacto_page'].includes(id)) && (
             <div className="space-y-3">
               <label className="text-[10px] font-black text-brand-dark/40 uppercase tracking-widest flex items-center gap-2 mb-1">
                 <ImageIcon className="w-3.5 h-3.5" /> Imagen Principal
@@ -471,10 +501,7 @@ export function AdminSections() {
                                       type="file" 
                                       className="hidden" 
                                       accept="image/*"
-                                      onChange={(e) => {
-                                         const file = e.target.files?.[0];
-                                         if (file) handleImageUpload(id, e, 'siteLogo');
-                                      }}
+                                      onChange={(e) => handleImageUpload(id, e, 'siteLogo')}
                                    />
                                 </label>
                              </div>
@@ -488,10 +515,18 @@ export function AdminSections() {
                        {renderField(id, 'donationButton', 'Texto Botón Donar', 'text', CheckCircle2, 20)}
                        {renderField(id, 'footerCopyright', 'Texto Copyright Footer', 'text', FileText, 80)}
                     </div>
+                    <h3 className="text-xs font-black text-brand-green uppercase tracking-[0.2em] border-b border-brand-light/10 pb-2 pt-4">Redes Sociales (Footer)</h3>
+                    <div className="bg-white/50 p-6 rounded-3xl border border-brand-light/10 space-y-6">
+                       {renderField(id, 'socialFacebook', 'URL de Facebook', 'text', Globe, 200)}
+                       {renderField(id, 'socialInstagram', 'URL de Instagram', 'text', Globe, 200)}
+                    </div>
                  </div>
               </div>
            </div>
         )}
+
+        {/* 1.5. Contacto Page — Contact Data & Social */}
+        {contactoSpecialBlock}
 
         {/* 2. Colonias Felinas Page */}
          {((id as string) === 'colonias_page') && (

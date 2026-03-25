@@ -1,4 +1,12 @@
+import { useContent } from '../contexts/ContentContext';
+
 export function PoliticaPrivacidadPage() {
+  const { getContent } = useContent();
+  const general = getContent('general', {
+    siteName: 'Dogcat Madrid Rescate'
+  });
+  const orgName = general.siteName || 'Dogcat Madrid Rescate';
+
   return (
     <div className="pt-24 pb-16 md:pt-32 md:pb-20 bg-brand-light text-brand-dark min-h-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -8,7 +16,7 @@ export function PoliticaPrivacidadPage() {
           <section>
             <h2 className="text-xl font-bold text-brand-dark mb-3">1. Información al usuario</h2>
             <p>
-              DOGCAT Madrid Rescate, como Responsable del Tratamiento, le informa que, según lo dispuesto en el Reglamento (UE) 2016/679, de 27 de abril, (RGPD) y en la L.O. 3/2018, de 5 de diciembre, de protección de datos y garantía de los derechos digitales (LOPDGDD), trataremos sus datos tal y como reflejamos en la presente Política de Privacidad.
+              {orgName}, como Responsable del Tratamiento, le informa que, según lo dispuesto en el Reglamento (UE) 2016/679, de 27 de abril, (RGPD) y en la L.O. 3/2018, de 5 de diciembre, de protección de datos y garantía de los derechos digitales (LOPDGDD), trataremos sus datos tal y como reflejamos en la presente Política de Privacidad.
             </p>
           </section>
 
@@ -60,7 +68,7 @@ export function PoliticaPrivacidadPage() {
           <section>
             <h2 className="text-xl font-bold text-brand-dark mb-3">6. Derechos de los usuarios</h2>
             <p>
-              Cualquier persona tiene derecho a obtener confirmación sobre si en DOGCAT Madrid Rescate estamos tratando datos personales que les conciernan, o no.
+              Cualquier persona tiene derecho a obtener confirmación sobre si en {orgName} estamos tratando datos personales que les conciernan, o no.
             </p>
             <p className="mt-2">
               Las personas interesadas tienen derecho a:

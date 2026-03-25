@@ -1,7 +1,23 @@
-import { Facebook, Mail, MessageCircle, Phone, Send } from 'lucide-react';
+import { Facebook, Instagram, Mail, MessageCircle, Phone, Send } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useContent } from '../contexts/ContentContext';
 
 export function Contacto() {
+  const { getContent } = useContent();
+  const contactData = getContent('contacto_page', {
+    contact_email: 'dogcatmadrid@gmail.com',
+    contact_phone: '687309639',
+    contact_whatsapp: '34687309639',
+    contact_facebook: '',
+    contact_instagram: ''
+  });
+
+  const email = contactData.contact_email || 'dogcatmadrid@gmail.com';
+  const phone = contactData.contact_phone || '687309639';
+  const whatsapp = contactData.contact_whatsapp || '34687309639';
+  const facebookUrl = contactData.contact_facebook;
+  const instagramUrl = contactData.contact_instagram;
+
   return (
     <section id="contacto" className="text-brand-dark">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,13 +30,13 @@ export function Contacto() {
 
             <div className="space-y-3 sm:space-y-4">
               {/* Contact Cards */}
-              <a href="mailto:dogcatmadrid@gmail.com" className="flex items-start gap-4 sm:gap-5 p-4 sm:p-5 rounded-2xl hover:bg-white transition-all border border-transparent hover:border-brand-dark/10 hover:shadow-md group">
+              <a href={`mailto:${email}`} className="flex items-start gap-4 sm:gap-5 p-4 sm:p-5 rounded-2xl hover:bg-white transition-all border border-transparent hover:border-brand-dark/10 hover:shadow-md group">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 bg-brand-green/20 text-brand-green rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:bg-brand-green group-hover:text-brand-dark transition-all duration-300">
                   <Mail className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <div>
                   <h3 className="font-bold text-base sm:text-lg mb-0.5 sm:mb-1">Email</h3>
-                  <p className="text-sm sm:text-base text-brand-dark/70 break-all">dogcatmadrid@gmail.com</p>
+                  <p className="text-sm sm:text-base text-brand-dark/70 break-all">{email}</p>
                 </div>
               </a>
 
@@ -30,12 +46,12 @@ export function Contacto() {
                 </div>
                 <div>
                   <h3 className="font-bold text-base sm:text-lg mb-0.5 sm:mb-1">Teléfono y WhatsApp</h3>
-                  <p className="text-sm sm:text-base text-brand-dark/70 mb-3">+34 687 30 96 39</p>
+                  <p className="text-sm sm:text-base text-brand-dark/70 mb-3">+34 {phone}</p>
                   <div className="flex flex-wrap gap-2">
-                    <a href="https://wa.me/34687309639" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-dark hover:text-brand-light bg-brand-green/20 hover:bg-brand-green px-3 py-1.5 rounded-lg transition-colors">
+                    <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-dark hover:text-brand-light bg-brand-green/20 hover:bg-brand-green px-3 py-1.5 rounded-lg transition-colors">
                       <MessageCircle className="w-3.5 h-3.5" /> WhatsApp
                     </a>
-                    <a href="tel:+34687309639" className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-dark hover:text-brand-light bg-brand-dark/5 hover:bg-brand-dark px-3 py-1.5 rounded-lg transition-colors">
+                    <a href={`tel:+34${phone}`} className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-dark hover:text-brand-light bg-brand-dark/5 hover:bg-brand-dark px-3 py-1.5 rounded-lg transition-colors">
                       <Phone className="w-3.5 h-3.5" /> Llamar
                     </a>
                   </div>
@@ -46,9 +62,16 @@ export function Contacto() {
             <div className="hidden lg:block pt-6 sm:pt-8 border-t border-brand-dark/10">
               <h3 className="font-bold mb-4 sm:mb-5 text-base sm:text-lg">Síguenos en redes</h3>
               <div className="flex gap-4">
-                <a href="https://www.facebook.com/people/Fer-Hidalgo-ayudas-colonias-felinas-Dogcat-Madrid/100077417127229/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 bg-white border border-brand-dark/10 text-brand-dark rounded-full flex items-center justify-center hover:bg-brand-green hover:border-brand-green hover:text-brand-dark transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
-                  <Facebook className="w-4 h-4 sm:w-5 sm:h-5" />
-                </a>
+                {facebookUrl && (
+                  <a href={facebookUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 bg-white border border-brand-dark/10 text-brand-dark rounded-full flex items-center justify-center hover:bg-brand-green hover:border-brand-green hover:text-brand-dark transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
+                    <Facebook className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </a>
+                )}
+                {instagramUrl && (
+                  <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 bg-white border border-brand-dark/10 text-brand-dark rounded-full flex items-center justify-center hover:bg-brand-green hover:border-brand-green hover:text-brand-dark transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
+                    <Instagram className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </a>
+                )}
               </div>
             </div>
           </div>
@@ -60,9 +83,9 @@ export function Contacto() {
                 <Send className="w-6 h-6 sm:w-7 sm:h-7 text-brand-green" />
                 Envíanos un mensaje
               </h3>
-              <form action="https://formsubmit.co/dogcatmadrid@gmail.com" method="POST" className="space-y-5 sm:space-y-6">
+              <form action={`https://formsubmit.co/${email}`} method="POST" className="space-y-5 sm:space-y-6">
                 {/* Configuración de FormSubmit */}
-                <input type="hidden" name="_subject" value="Nuevo mensaje desde la web DOGCAT Madrid" />
+                <input type="hidden" name="_subject" value="Nuevo mensaje desde la web" />
                 <input type="hidden" name="_template" value="table" />
                 
                 {/* Trampa Honeypot (invisible para humanos, los bots lo rellenan y el mensaje se descarta) */}
@@ -148,9 +171,16 @@ export function Contacto() {
             <div className="lg:hidden mt-8 pt-8 border-t border-brand-dark/10 text-center">
               <h3 className="font-bold mb-5 text-lg">Síguenos en redes</h3>
               <div className="flex justify-center gap-4">
-                <a href="https://www.facebook.com/people/Fer-Hidalgo-ayudas-colonias-felinas-Dogcat-Madrid/100077417127229/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white border border-brand-dark/10 text-brand-dark rounded-full flex items-center justify-center hover:bg-brand-green hover:border-brand-green hover:text-brand-dark transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
-                  <Facebook className="w-5 h-5" />
-                </a>
+                {facebookUrl && (
+                  <a href={facebookUrl} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white border border-brand-dark/10 text-brand-dark rounded-full flex items-center justify-center hover:bg-brand-green hover:border-brand-green hover:text-brand-dark transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
+                    <Facebook className="w-5 h-5" />
+                  </a>
+                )}
+                {instagramUrl && (
+                  <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white border border-brand-dark/10 text-brand-dark rounded-full flex items-center justify-center hover:bg-brand-green hover:border-brand-green hover:text-brand-dark transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
+                    <Instagram className="w-5 h-5" />
+                  </a>
+                )}
               </div>
             </div>
           </div>
