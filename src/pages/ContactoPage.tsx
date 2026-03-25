@@ -29,19 +29,6 @@ export function ContactoPage() {
           )}
         </div>
 
-        {/* Page Header Image */}
-        {pageContent.image && (
-          <div className="max-w-5xl mx-auto mb-16 px-4">
-            <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-brand-light/10 aspect-[21/9]">
-              <img 
-                src={pageContent.image} 
-                alt={pageContent.title} 
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/10 to-transparent"></div>
-            </div>
-          </div>
-        )}
       </div>
       <Contacto />
     </div>
