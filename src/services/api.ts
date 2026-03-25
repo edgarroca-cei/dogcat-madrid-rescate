@@ -214,5 +214,41 @@ export const api = {
     } catch (err) {
       return { success: true };
     }
+  },
+
+  // Site Content (Dynamic Texts and Sections)
+  async getAllSiteContent() {
+    try {
+      const res = await fetch(url(`/site-content?t=${Date.now()}`));
+      if (!res.ok) throw new Error('Backend not found');
+      return await res.json();
+    } catch (err) {
+      console.warn("API falló, usando datos por defecto");
+      return {};
+    }
+  },
+
+  async getSiteContent(id: string) {
+    try {
+      const res = await fetch(url(`/site-content/${id}`));
+      if (!res.ok) throw new Error('Backend not found');
+      return await res.json();
+    } catch (err) {
+      return null;
+    }
+  },
+
+  async saveSiteContent(id: string, content: any) {
+    try {
+      const res = await fetch(url('/site-content'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, content })
+      });
+      if (!res.ok) throw new Error('Error al guardar');
+      return await res.json();
+    } catch (err) {
+      throw err;
+    }
   }
 };

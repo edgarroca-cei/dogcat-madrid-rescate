@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ArrowRight, Calendar, Search, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { api, getFileUrl } from '../services/api';
+import { useContent } from '../contexts/ContentContext';
 
 interface BlogPost {
   id: string;
@@ -21,6 +22,12 @@ const formatDate = (dateStr: string) => {
 };
 
 export function BlogList() {
+  const { getContent } = useContent();
+  const pageContent = getContent('blog_page', {
+    title: 'Noticias del mundo animal',
+    text: 'Descubre nuestras últimas historias de rescate, consejos felinos y entérate de las campañas vigentes.'
+  });
+
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -54,12 +61,16 @@ export function BlogList() {
           <p className="inline-flex items-center gap-2 text-brand-green font-bold tracking-wider uppercase text-sm mb-4 bg-brand-green/10 px-4 py-2 rounded-full">
             <BookOpen className="w-4 h-4" /> Nuestro blog
           </p>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
-            Noticias del mundo animal
-          </h1>
-          <p className="text-brand-light/70 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
-            Descubre nuestras últimas historias de rescate, consejos felinos y entérate de las campañas vigentes.
-          </p>
+          {pageContent.title && (
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
+              {pageContent.title}
+            </h1>
+          )}
+          {pageContent.text && (
+            <p className="text-brand-dark/80 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-8">
+              {pageContent.text}
+            </p>
+          )}
 
           {/* Search Bar */}
           <div className="relative max-w-2xl mx-auto transform transition-all hover:scale-[1.02]">
@@ -75,6 +86,20 @@ export function BlogList() {
             />
           </div>
         </div>
+
+        {/* Page Header Image */}
+        {pageContent.image && (
+          <div className="max-w-5xl mx-auto mb-16 px-4">
+            <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-brand-light/10 aspect-[21/9]">
+              <img 
+                src={pageContent.image} 
+                alt={pageContent.title} 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/40 to-transparent"></div>
+            </div>
+          </div>
+        )}
 
         {loading ? (
           <div className="flex justify-center py-20">

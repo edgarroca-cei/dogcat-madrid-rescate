@@ -1,8 +1,15 @@
 import { PawPrint, Menu, X } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useContent } from '../contexts/ContentContext';
 
 export function Navbar() {
+  const { getContent } = useContent();
+  const pageContent = getContent('general', {
+    siteName: 'DOGCAT Madrid',
+    donationButton: 'Donar ahora'
+  });
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
@@ -68,27 +75,50 @@ export function Navbar() {
     );
   };
 
+  // Brand Identity Helper
+  const BrandLogo = () => {
+    const iconName = pageContent.siteIcon || 'PawPrint';
+    const Icon = (LucideIcons as any)[iconName] || PawPrint;
+    
+    if (pageContent.siteLogo) {
+      return (
+        <img 
+          src={pageContent.siteLogo} 
+          alt={pageContent.siteName} 
+          className="h-8 md:h-10 w-auto object-contain"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+          }}
+        />
+      );
+    }
+    
+    return <Icon className="h-7 w-7 md:h-8 md:w-8 text-brand-green fill-brand-green" />;
+  };
+
   return (
     <nav className="fixed w-full z-50 bg-brand-dark/90 backdrop-blur-md border-b border-brand-light/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex-shrink-0 flex items-center gap-2">
-            <PawPrint className="h-7 w-7 md:h-8 md:w-8 text-brand-green fill-brand-green" />
-            <span className="font-bold text-lg md:text-xl tracking-tight text-brand-light">
-              DOGCAT Madrid
+          <Link to="/" className="flex-shrink-0 flex items-center gap-3 group transition-transform hover:scale-105 active:scale-95">
+            <BrandLogo />
+            <span className="font-bold text-lg md:text-xl tracking-tight text-brand-light group-hover:text-brand-green transition-colors">
+              {pageContent.siteName}
             </span>
           </Link>
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center space-x-8">
             {navLinks.map((link) => renderLink(link, false))}
-            <button
-              onClick={() => window.dispatchEvent(new CustomEvent('open-donation-modal'))}
-              className="bg-brand-cream text-brand-dark px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-brand-light transition-colors"
-            >
-              Donar ahora
-            </button>
+            {pageContent.donationButton && (
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent('open-donation-modal'))}
+                className="bg-brand-cream text-brand-dark px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-brand-light transition-colors"
+              >
+                {pageContent.donationButton}
+              </button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -113,17 +143,19 @@ export function Navbar() {
       >
         <div className="px-4 pt-4 pb-6 space-y-2 sm:px-6 shadow-2xl">
           {navLinks.map((link) => renderLink(link, true))}
-          <div className="pt-4 pb-2">
-            <button
-              onClick={() => {
-                setIsOpen(false);
-                window.dispatchEvent(new CustomEvent('open-donation-modal'));
-              }}
-              className="block w-full text-center bg-brand-green text-brand-dark px-6 py-4 rounded-xl font-bold text-lg hover:bg-white transition-colors shadow-lg shadow-brand-green/20"
-            >
-              Donar ahora
-            </button>
-          </div>
+          {pageContent.donationButton && (
+            <div className="pt-4 pb-2">
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  window.dispatchEvent(new CustomEvent('open-donation-modal'));
+                }}
+                className="block w-full text-center bg-brand-green text-brand-dark px-6 py-4 rounded-xl font-bold text-lg hover:bg-white transition-colors shadow-lg shadow-brand-green/20"
+              >
+                {pageContent.donationButton}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </nav>

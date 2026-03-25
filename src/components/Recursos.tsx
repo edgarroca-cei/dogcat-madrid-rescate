@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import * as Icons from 'lucide-react';
+import { useContent } from '../contexts/ContentContext';
 
 export interface Mapa {
   id: string;
@@ -12,6 +13,12 @@ export interface Mapa {
 }
 
 export function Recursos() {
+  const { getContent } = useContent();
+  const pageContent = getContent('recursos_page', {
+    title: 'Mapas y recursos',
+    text: 'Explora los mapas interactivos con información sobre subvenciones, licitaciones y registros históricos.'
+  });
+
   const [mapas, setMapas] = useState<Mapa[]>([]);
   const [activeMap, setActiveMap] = useState<Mapa | null>(null);
   const [loading, setLoading] = useState(true);
@@ -69,12 +76,16 @@ export function Recursos() {
           <p className="inline-flex items-center gap-2 text-brand-green font-bold tracking-wider uppercase text-sm mb-4 bg-brand-green/10 px-4 py-2 rounded-full">
             <Icons.Map className="w-4 h-4" /> Documentación
           </p>
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
-            Mapas y recursos
-          </h1>
-          <p className="text-brand-dark/80 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Explora los mapas interactivos con información sobre subvenciones, licitaciones y registros históricos.
-          </p>
+          {pageContent.title && (
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
+              {pageContent.title}
+            </h1>
+          )}
+          {pageContent.text && (
+            <p className="text-brand-dark/80 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+              {pageContent.text}
+            </p>
+          )}
         </div>
 
         <div className="bg-white rounded-2xl p-3 md:p-5 shadow-sm border border-brand-light/20">
@@ -107,7 +118,7 @@ export function Recursos() {
               <p className="text-xs text-gray-500 text-center mb-4">{activeMap.description}</p>
 
               {/* Map Container */}
-              <div className="rounded-xl overflow-hidden shadow-inner border-2 border-brand-cream h-[70vh] min-h-[500px] relative bg-gray-100">
+              <div className="rounded-xl overflow-hidden shadow-inner border-2 border-brand-cream h-[70vh] min-h-[500px] relative bg-gray-100 mb-8">
                 {isMapLoading && (
                   <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-gray-50/80 backdrop-blur-sm">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-green mb-4"></div>
@@ -127,6 +138,18 @@ export function Recursos() {
                 ></iframe>
               </div>
             </>
+          )}
+
+          {/* Page Image */}
+          {pageContent.image && (
+            <div className="relative rounded-[2rem] overflow-hidden shadow-xl aspect-[21/9] mt-12">
+              <img 
+                src={pageContent.image} 
+                alt={pageContent.title} 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/20 to-transparent"></div>
+            </div>
           )}
         </div>
       </div>

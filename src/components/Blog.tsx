@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { api, getFileUrl } from '../services/api';
+import { useContent } from '../contexts/ContentContext';
 
 interface BlogPost {
   id: string;
@@ -15,6 +16,11 @@ interface BlogPost {
 export function Blog() {
   const [stories, setStories] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const { getContent } = useContent();
+  const pageContent = getContent('blog_page', {
+    badge: 'Actualidad',
+    title: 'Noticias del mundo animal'
+  });
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -36,10 +42,12 @@ export function Blog() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-4">
           <div>
-            <p className="text-brand-green font-semibold tracking-wider uppercase text-sm mb-2">
-              Actualidad
-            </p>
-            <h2 className="text-3xl md:text-4xl font-bold">Noticias del mundo animal</h2>
+            {pageContent.badge && (
+              <p className="text-brand-green font-semibold tracking-wider uppercase text-sm mb-2">
+                {pageContent.badge}
+              </p>
+            )}
+            {pageContent.title && <h2 className="text-3xl md:text-4xl font-bold">{pageContent.title}</h2>}
           </div>
           <Link to="/blog" className="inline-flex items-center gap-2 text-brand-light hover:text-brand-green transition-colors font-semibold text-sm">
             Ver todas las noticias <ArrowRight className="w-4 h-4" />

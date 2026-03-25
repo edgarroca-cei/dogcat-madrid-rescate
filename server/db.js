@@ -1,74 +1,108 @@
-import sqlite3 from 'sqlite3';
+import fs from 'fs/promises';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const dbPath = resolve(__dirname, '../database.sqlite');
+const dbPath = resolve(__dirname, '../database.json');
 
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error('Error open database: ', err.message);
-  } else {
-    console.log('Connected to SQLite database.');
-    db.run(`CREATE TABLE IF NOT EXISTS posts (
-      id TEXT PRIMARY KEY,
-      title TEXT,
-      slug TEXT,
-      excerpt TEXT,
-      content TEXT,
-      image TEXT,
-      color TEXT,
-      date TEXT,
-      author TEXT,
-      createdAt TEXT
-    )`);
+// Simple JSON Database implementation to bypass sqlite3 binding issues
+let data = {
+  posts: [],
+  settings: [],
+  mapas: [],
+  site_content: []
+};
 
-    db.run(`CREATE TABLE IF NOT EXISTS settings (
-      id TEXT PRIMARY KEY,
-      paypalLink TEXT,
-      bizumNumber TEXT,
-      bizumConcept TEXT,
-      updatedAt TEXT
-    )`);
-
-    db.run(`CREATE TABLE IF NOT EXISTS mapas (
-      id TEXT PRIMARY KEY,
-      title TEXT,
-      mid TEXT,
-      description TEXT,
-      icon TEXT,
-      "order" INTEGER,
-      createdAt TEXT
-    )`);
+// Synchronous initial load to mimic sqlite3 behavior
+if (existsSync(dbPath)) {
+  try {
+    data = JSON.parse(readFileSync(dbPath, 'utf-8'));
+  } catch (e) {
+    console.error('Error loading JSON DB:', e);
   }
-});
-
-// Promisified wrappers
-export function run(sql, params = []) {
-  return new Promise((resolve, reject) => {
-    db.run(sql, params, function (err) {
-      if (err) return reject(err);
-      resolve(this);
-    });
-  });
+} else {
+  writeFileSync(dbPath, JSON.stringify(data, null, 2));
 }
 
-export function get(sql, params = []) {
-  return new Promise((resolve, reject) => {
-    db.get(sql, params, (err, row) => {
-      if (err) return reject(err);
-      resolve(row);
-    });
-  });
+async function save() {
+  await fs.writeFile(dbPath, JSON.stringify(data, null, 2));
 }
 
-export function all(sql, params = []) {
-  return new Promise((resolve, reject) => {
-    db.all(sql, params, (err, rows) => {
-      if (err) return reject(err);
-      resolve(rows);
-    });
-  });
+export async function run(sql, params = []) {
+  const sqlLower = sql.toLowerCase();
+  
+  if (sqlLower.includes('insert into site_content')) {
+    const [id, content, updatedAt] = params;
+    const index = data.site_content.findIndex(item => item.id === id);
+    if (index > -1) {
+      data.site_content[index] = { id, content, updatedAt };
+    } else {
+      data.site_content.push({ id, content, updatedAt });
+    }
+  } else if (sqlLower.includes('update site_content')) {
+    const [content, updatedAt, id] = params;
+    const index = data.site_content.findIndex(item => item.id === id);
+    if (index > -1) data.site_content[index] = { id, content, updatedAt };
+  } else if (sqlLower.includes('insert into posts')) {
+    const [id, title, slug, excerpt, content, image, color, date, author, createdAt] = params;
+    data.posts.push({ id, title, slug, excerpt, content, image, color, date, author, createdAt });
+  } else if (sqlLower.includes('update posts')) {
+    const [title, slug, excerpt, content, image, color, date, author, createdAt, id] = params;
+    const index = data.posts.findIndex(item => item.id === id);
+    if (index > -1) data.posts[index] = { id, title, slug, excerpt, content, image, color, date, author, createdAt };
+  } else if (sqlLower.includes('delete from posts')) {
+    const [id] = params;
+    data.posts = data.posts.filter(p => p.id !== id);
+  } else if (sqlLower.includes('insert into settings')) {
+    const [paypalLink, bizumNumber, bizumConcept, updatedAt] = params;
+    data.settings = data.settings.filter(s => s.id !== 'donations');
+    data.settings.push({ id: 'donations', paypalLink, bizumNumber, bizumConcept, updatedAt });
+  } else if (sqlLower.includes('update settings')) {
+    const [paypalLink, bizumNumber, bizumConcept, updatedAt] = params;
+    const index = data.settings.findIndex(s => s.id === 'donations');
+    if (index > -1) data.settings[index] = { id: 'donations', paypalLink, bizumNumber, bizumConcept, updatedAt };
+  } else if (sqlLower.includes('insert into mapas')) {
+    const [id, title, mid, description, icon, order, createdAt] = params;
+    data.mapas.push({ id, title, mid, description, icon, order, createdAt });
+  } else if (sqlLower.includes('update mapas')) {
+    const [title, mid, description, icon, order, createdAt, id] = params;
+    const index = data.mapas.findIndex(m => m.id === id);
+    if (index > -1) data.mapas[index] = { id, title, mid, description, icon, order, createdAt };
+  } else if (sqlLower.includes('delete from mapas')) {
+    const [id] = params;
+    data.mapas = data.mapas.filter(m => m.id !== id);
+  }
+
+  await save();
+  return { lastID: params[0] || Date.now() };
 }
 
-export default db;
+export async function get(sql, params = []) {
+  const sqlLines = sql.toLowerCase();
+  if (sqlLines.includes('from site_content')) {
+    return data.site_content.find(item => item.id === params[0]);
+  } else if (sqlLines.includes('from settings')) {
+    return data.settings.find(s => s.id === 'donations');
+  } else if (sqlLines.includes('from posts')) {
+    const [idOrSlug] = params;
+    return data.posts.find(p => p.id === idOrSlug || p.slug === idOrSlug);
+  } else if (sqlLines.includes('from mapas')) {
+    return data.mapas.find(m => m.id === params[0]);
+  }
+  return null;
+}
+
+export async function all(sql, params = []) {
+  const sqlLower = sql.toLowerCase();
+  if (sqlLower.includes('from site_content')) {
+    return data.site_content;
+  } else if (sqlLower.includes('from posts')) {
+    return [...data.posts].sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+  } else if (sqlLower.includes('from mapas')) {
+    return [...data.mapas].sort((a, b) => (a.order || 0) - (b.order || 0));
+  }
+  return [];
+}
+
+export default { run, get, all };

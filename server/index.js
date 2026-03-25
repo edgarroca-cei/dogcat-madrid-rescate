@@ -143,6 +143,59 @@ app.get('/api/mapas', async (req, res) => {
   }
 });
 
+// --- SITE CONTENT ---
+app.get('/api/site-content', async (req, res) => {
+  try {
+    const rows = await all('SELECT * FROM site_content');
+    const content = {};
+    rows.forEach(row => {
+      try {
+        content[row.id] = JSON.parse(row.content);
+      } catch (e) {
+        content[row.id] = row.content;
+      }
+    });
+    res.json(content);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/site-content/:id', async (req, res) => {
+  try {
+    const row = await get('SELECT * FROM site_content WHERE id = ?', [req.params.id]);
+    if (row) {
+      try {
+        res.json(JSON.parse(row.content));
+      } catch (e) {
+        res.json(row.content);
+      }
+    } else {
+      res.status(404).json({ error: 'Content not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/site-content', async (req, res) => {
+  const { id, content } = req.body;
+  const contentStr = typeof content === 'object' ? JSON.stringify(content) : content;
+  const updatedAt = new Date().toISOString();
+  
+  try {
+    const existing = await get('SELECT id FROM site_content WHERE id = ?', [id]);
+    if (existing) {
+      await run('UPDATE site_content SET content = ?, updatedAt = ? WHERE id = ?', [contentStr, updatedAt, id]);
+    } else {
+      await run('INSERT INTO site_content (id, content, updatedAt) VALUES (?, ?, ?)', [id, contentStr, updatedAt]);
+    }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.post('/api/mapas', async (req, res) => {
   const p = req.body;
   const isEditing = !!p.id;

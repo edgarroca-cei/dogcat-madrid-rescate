@@ -1,6 +1,6 @@
 import { Navigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { PawPrint, FileText, Settings, LogOut, Menu, X, MapPin } from 'lucide-react';
+import { PawPrint, FileText, Settings, LogOut, Menu, X, MapPin, Layout } from 'lucide-react';
 import { useState } from 'react';
 
 export function AdminLayout() {
@@ -22,6 +22,7 @@ export function AdminLayout() {
 
   const navItems = [
     { name: 'Blog', href: '/admin', icon: FileText },
+    { name: 'Secciones', href: '/admin/secciones', icon: Layout },
     { name: 'Mapas', href: '/admin/mapas', icon: MapPin },
     { name: 'Donaciones', href: '/admin/donaciones', icon: Settings },
   ];

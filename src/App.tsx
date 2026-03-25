@@ -13,59 +13,64 @@ import { PoliticaPrivacidadPage } from './pages/PoliticaPrivacidadPage';
 import { PoliticaCookiesPage } from './pages/PoliticaCookiesPage';
 import { ScrollToTop } from './components/ScrollToTop';
 import { AuthProvider } from './contexts/AuthContext';
+import { ContentProvider } from './contexts/ContentContext';
 import { AdminLogin } from './pages/admin/AdminLogin';
 import { AdminLayout } from './pages/admin/AdminLayout';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { AdminBlogEditor } from './pages/admin/AdminBlogEditor';
 import { AdminMapas } from './pages/admin/AdminMapas';
 import { AdminDonaciones } from './pages/admin/AdminDonaciones';
+import { AdminSections } from './pages/admin/AdminSections';
 import { DonationModal } from './components/DonationModal';
 
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <DonationModal />
-        <div className="min-h-screen bg-brand-dark text-brand-light font-sans selection:bg-brand-green selection:text-brand-dark flex flex-col">
-          <Routes>
-            {/* Admin Routes (No Navbar/Footer) */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<AdminDashboard />} />
-              <Route path="mapas" element={<AdminMapas />} />
-              <Route path="donaciones" element={<AdminDonaciones />} />
-              <Route path="blog/new" element={<AdminBlogEditor />} />
-              <Route path="blog/edit/:id" element={<AdminBlogEditor />} />
-            </Route>
+      <ContentProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <DonationModal />
+          <div className="min-h-screen bg-brand-dark text-brand-light font-sans selection:bg-brand-green selection:text-brand-dark flex flex-col">
+            <Routes>
+              {/* Admin Routes (No Navbar/Footer) */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="mapas" element={<AdminMapas />} />
+                <Route path="donaciones" element={<AdminDonaciones />} />
+                <Route path="secciones" element={<AdminSections />} />
+                <Route path="blog/new" element={<AdminBlogEditor />} />
+                <Route path="blog/edit/:id" element={<AdminBlogEditor />} />
+              </Route>
 
-            {/* Public Routes */}
-            <Route
-              path="*"
-              element={
-                <>
-                  <Navbar />
-                  <div className="flex-grow">
-                    <Routes>
-                      <Route path="/" element={<Home />} />
-                      <Route path="/proyecto" element={<ProyectoPage />} />
-                      <Route path="/colonias-felinas" element={<ColoniasFelinasPage />} />
-                      <Route path="/recursos" element={<RecursosPage />} />
-                      <Route path="/contacto" element={<ContactoPage />} />
-                      <Route path="/blog" element={<BlogList />} />
-                      <Route path="/blog/:id" element={<BlogPost />} />
-                      <Route path="/aviso-legal" element={<AvisoLegalPage />} />
-                      <Route path="/privacidad" element={<PoliticaPrivacidadPage />} />
-                      <Route path="/cookies" element={<PoliticaCookiesPage />} />
-                    </Routes>
-                  </div>
-                  <Footer />
-                </>
-              }
-            />
-          </Routes>
-        </div>
-      </BrowserRouter>
+              {/* Public Routes */}
+              <Route
+                path="*"
+                element={
+                  <>
+                    <Navbar />
+                    <div className="flex-grow">
+                      <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/proyecto" element={<ProyectoPage />} />
+                        <Route path="/colonias-felinas" element={<ColoniasFelinasPage />} />
+                        <Route path="/recursos" element={<RecursosPage />} />
+                        <Route path="/contacto" element={<ContactoPage />} />
+                        <Route path="/blog" element={<BlogList />} />
+                        <Route path="/blog/:id" element={<BlogPost />} />
+                        <Route path="/aviso-legal" element={<AvisoLegalPage />} />
+                        <Route path="/privacidad" element={<PoliticaPrivacidadPage />} />
+                        <Route path="/cookies" element={<PoliticaCookiesPage />} />
+                      </Routes>
+                    </div>
+                    <Footer />
+                  </>
+                }
+              />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </ContentProvider>
     </AuthProvider>
   );
 }

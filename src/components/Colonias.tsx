@@ -1,27 +1,41 @@
 import { Fish, Home, LifeBuoy, Stethoscope } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useContent } from '../contexts/ContentContext';
+import * as LucideIcons from 'lucide-react';
+
+const renderIcon = (iconName: string) => {
+  const Icon = (LucideIcons as any)[iconName] || LucideIcons.HelpCircle;
+  return <Icon className="w-8 h-8" />;
+};
 
 export function Colonias() {
+  const { getContent } = useContent();
+  const coloniasContent = getContent('colonias_section', {
+    badge: 'Donaciones y recursos',
+    title: 'Apoyo económico para las colonias',
+    text: 'Actuamos como motor de ayuda para alimentadoras y asociaciones de Madrid. Canalizamos tu solidaridad mediante la donación directa de alimento, financiación de gastos veterinarios y suministro de material especializado.'
+  });
+
   const needs = [
     {
-      title: 'Material de captura',
-      description: 'Jaulas trampa y transportines para rescates seguros.',
-      icon: <LifeBuoy className="w-8 h-8" />,
+      title: coloniasContent.n1_title || 'Material de captura',
+      description: coloniasContent.n1_text || 'Jaulas trampa y transportines para rescates seguros.',
+      icon: renderIcon(coloniasContent.n1_icon || 'LifeBuoy'),
     },
     {
-      title: 'Atención veterinaria',
-      description: 'Esterilizaciones, vacunas y curas de urgencia.',
-      icon: <Stethoscope className="w-8 h-8" />,
+      title: coloniasContent.n2_title || 'Atención veterinaria',
+      description: coloniasContent.n2_text || 'Esterilizaciones, vacunas y curas de urgencia.',
+      icon: renderIcon(coloniasContent.n2_icon || 'Stethoscope'),
     },
     {
-      title: 'Alimentación diaria',
-      description: 'Pienso y comida húmeda para mantenerlos fuertes.',
-      icon: <Fish className="w-8 h-8" />,
+      title: coloniasContent.n3_title || 'Alimentación diaria',
+      description: coloniasContent.n3_text || 'Pienso y comida húmeda para mantenerlos fuertes.',
+      icon: renderIcon(coloniasContent.n3_icon || 'Fish'),
     },
     {
-      title: 'Refugios de invierno',
-      description: 'Casetas para protegerlos del frío y la lluvia.',
-      icon: <Home className="w-8 h-8" />,
+      title: coloniasContent.n4_title || 'Refugios de invierno',
+      description: coloniasContent.n4_text || 'Casetas para protegerlos del frío y la lluvia.',
+      icon: renderIcon(coloniasContent.n4_icon || 'Home'),
     },
   ];
 
@@ -35,7 +49,7 @@ export function Colonias() {
             <div className="relative aspect-[4/3] w-full max-w-md mx-auto lg:max-w-none">
               <div className="absolute inset-0 bg-brand-green/20 rounded-[2rem] transform -rotate-3 scale-105"></div>
               <img 
-                src="/cat_colony.jpg" 
+                src={coloniasContent.image || "/cat_colony.jpg"} 
                 alt="Gatos de colonia alimentándose" 
                 loading="lazy"
                 className="relative w-full h-full object-cover rounded-[2rem] shadow-lg"
@@ -45,12 +59,21 @@ export function Colonias() {
 
           {/* Content Side */}
           <div className="w-full lg:w-3/5">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-brand-dark">
-              Ayuda a las <span className="text-brand-green">colonias felinas</span>
-            </h2>
-            <p className="text-brand-dark/75 mb-10 text-base md:text-lg max-w-xl">
-              Gestionamos colonias mediante el método <strong>C.E.R.</strong> (Captura, Esterilización y Retorno). Tu aportación mensual o puntual se destina íntegramente a cubrir sus necesidades básicas:
-            </p>
+            {coloniasContent.badge && (
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-green/20 text-brand-dark font-bold text-xs mb-4 uppercase tracking-wider border border-brand-green/30">
+                {coloniasContent.badge}
+              </div>
+            )}
+            {coloniasContent.title && (
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-brand-dark">
+                {coloniasContent.title}
+              </h2>
+            )}
+            {coloniasContent.text && (
+              <p className="text-brand-dark/75 mb-10 text-base md:text-lg max-w-xl">
+                {coloniasContent.text}
+              </p>
+            )}
 
             {/* Loose List */}
             <div className="grid sm:grid-cols-2 gap-x-6 gap-y-8 mb-10">

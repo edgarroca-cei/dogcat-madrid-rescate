@@ -1,0 +1,57 @@
+{
+  "posts": [],
+  "settings": [],
+  "mapas": [],
+  "site_content": [
+    {
+      "id": "home_sections",
+      "content": "{\"order\":[\"Hero\",\"Colonias\",\"Proyecto\",\"Blog\"],\"hidden\":[]}",
+      "updatedAt": "2026-03-25T00:55:54.138Z"
+    },
+    {
+      "id": "hero",
+      "content": "{\"badge\":\"ONG de rescate animal en Madrid\",\"title\":\"Tu donativo tiene un impacto directo y real\",\"text\":\"Nuestra labor se desarrolla en los distintos distritos de Madrid, respaldando a quienes velan por el bienestar felino los 365 días del año. Tu aportación se transforma de manera inmediata en alimento, atención veterinaria de urgencia y material de captura ético.\",\"buttonText\":\"Donar ahora\",\"image\":\"/dog_cat_hero.png\"}",
+      "updatedAt": "2026-03-25T00:55:54.149Z"
+    },
+    {
+      "id": "colonias_section",
+      "content": "{\"badge\":\"Donaciones y recursos\",\"title\":\"Ayuda a las colonias felinas\",\"text\":\"Gestionamos colonias mediante el método C.E.R. (Captura, Esterilización y Retorno). Tu aportación mensual o puntual se destina íntegramente a cubrir sus necesidades básicas:\",\"image\":\"/cat_colony.jpg\"}",
+      "updatedAt": "2026-03-25T00:55:54.151Z"
+    },
+    {
+      "id": "proyecto_section",
+      "content": "{\"badge\":\"\",\"title\":\"Proyecto Dogcat Rescate\",\"text\":\"Buscamos alianzas para expandir nuestra infraestructura y llevar nuestra capacidad de respuesta al siguiente nivel.\",\"buttonText\":\"Ver detalles proyecto\",\"image\":\"https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=1000\",\"f1_icon\":\"Truck\",\"f1_title\":\"Flota de rescate\",\"f1_text\":\"Vehículos adaptados para transporte seguro y material de captura.\",\"f2_icon\":\"House-heart\",\"f2_title\":\"Infraestructura\",\"f2_text\":\"Instalaciones temporales para cuarentenas y recuperación.\",\"f3_icon\":\"Handshake\",\"f3_title\":\"Alianzas corporativas\",\"f3_text\":\"Colaboraciones mediante patrocinios, cesiones de material o donaciones.\"}",
+      "updatedAt": "2026-03-25T00:55:54.151Z"
+    },
+    {
+      "id": "colonias_page",
+      "content": "{\"title\":\"Intervención y apoyo para las colonias felinas de Madrid\",\"text\":\"En DOGCAT Madrid centramos nuestros esfuerzos en el terreno, respaldando de forma integral a las gestoras de colonias.\",\"image\":\"/cat_colony.jpg\",\"cer_title\":\"Nuestro apoyo al método C.E.R.\",\"cer_text\":\"Facilitamos los recursos necesarios para que las gestoras de Madrid puedan aplicar el método C.E.R. (Captura, Esterilización y Retorno) con garantías de éxito.\",\"cer_step1_title\":\"Captura y material\",\"cer_step1_text\":\"Donamos jaulas trampa y transportines especializados para que el proceso de captura sea seguro y respetuoso con el animal.\",\"cer_step1_icon\":\"C\",\"cer_step2_title\":\"Esterilización y veterinaria\",\"cer_step2_text\":\"Abonamos directamente las facturas de esterilización, vacunación e identificación en centros clínicos colaboradores.\",\"cer_step2_icon\":\"E\",\"cer_step3_title\":\"Retorno y alimentación\",\"cer_step3_text\":\"Tras el retorno a su colonia, seguimos apoyando a las alimentadoras mediante la donación periódica de pienso y comida húmeda.\",\"cer_step3_icon\":\"R\",\"donations_title\":\"¿A dónde va tu donativo?\",\"donations_text\":\"No recibimos ayudas públicas suficientes. Dependemos de la solidaridad de personas como tú.\"}",
+      "updatedAt": "2026-03-25T00:55:54.152Z"
+    },
+    {
+      "id": "proyecto_page",
+      "content": "{\"title\":\"Proyecto Dogcat Rescate\",\"text\":\"Un proyecto integral de bienestar y protección animal diseñado para dar respuesta profesional a emergencias.\",\"image\":\"https://images.pexels.com/photos/9000185/pexels-photo-9000185.jpeg?auto=compress&cs=tinysrgb&w=1200\",\"fleet_title\":\"Flota de rescate: el motor del proyecto\",\"fleet_text\":\"El diseño del proyecto integra vehículos especialmente rotulados y adaptados para el transporte seguro de animales.\",\"areas_title\":\"Nuestras áreas de actuación\",\"areas_text\":\"Nuestra estructura, unidades y protocolos están completamente definidos y listos para implementarse.\"}",
+      "updatedAt": "2026-03-25T00:55:54.152Z"
+    },
+    {
+      "id": "blog_page",
+      "content": "{\"title\":\"Noticias y Actualidad\",\"text\":\"Sigue de cerca nuestra labor, rescates y casos de éxito del día a día.\",\"image\":\"https://images.unsplash.com/photo-1573865526739-10659fec78a5?q=80&w=2000\"}",
+      "updatedAt": "2026-03-25T00:55:54.163Z"
+    },
+    {
+      "id": "recursos_page",
+      "content": "{\"title\":\"Recursos para Gestoras\",\"text\":\"Ponemos a tu disposición guías, normativas y herramientas para facilitar la gestión ética de colonias.\",\"image\":\"https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=2000\"}",
+      "updatedAt": "2026-03-25T00:55:54.163Z"
+    },
+    {
+      "id": "contacto_page",
+      "content": "{\"title\":\"Contacta con nosotros\",\"text\":\"¿Tienes dudas sobre cómo colaborar o necesitas asesoramiento técnico? Estamos aquí para ayudarte.\",\"image\":\"https://images.unsplash.com/photo-1495360010541-f48722b34f7d?q=80&w=2000\"}",
+      "updatedAt": "2026-03-25T00:55:54.166Z"
+    },
+    {
+      "id": "general",
+      "content": "{\"siteName\":\"DOGCAT Madrid\",\"donationButton\":\"Donar ahora\",\"footerCopyright\":\"Todos los derechos reservados.\",\"siteLogo\":\"\"}",
+      "updatedAt": "2026-03-25T00:55:54.167Z"
+    }
+  ]
+}
