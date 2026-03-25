@@ -268,10 +268,19 @@ export const api = {
   async restoreDatabase(file: File) {
     const formData = new FormData();
     formData.append('database', file);
-    const res = await fetch(url('/admin/restore'), {
-      method: 'POST',
-      body: formData
-    });
-    return await res.json();
+    try {
+      const res = await fetch(url('/admin/restore'), {
+        method: 'POST',
+        body: formData
+      });
+      const text = await res.text();
+      try {
+        return JSON.parse(text);
+      } catch (err) {
+        return { success: false, error: `Respuesta inesperada del servidor (no es JSON): ${text.substring(0, 50)}...` };
+      }
+    } catch (err) {
+      return { success: false, error: 'Error de conexión con el servidor.' };
+    }
   }
 };
