@@ -140,19 +140,6 @@ export function Recursos() {
             </>
           )}
 
-          {/* Page Image */}
-          {pageContent.image && (
-            <div className="relative rounded-[2rem] overflow-hidden shadow-xl aspect-[21/9] mt-12">
-              <img 
-                src={pageContent.image} 
-                alt={pageContent.title} 
-                className="w-full h-full object-cover transition-opacity duration-500"
-                loading="lazy"
-                decoding="async"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/20 to-transparent"></div>
-            </div>
-          )}
         </div>
       </div>
     </section>
