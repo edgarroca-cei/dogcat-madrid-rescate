@@ -424,7 +424,7 @@ export function AdminSections() {
           )}
 
           {/* Right: Main Image Uploader */}
-          {(data.image !== undefined || ['proyecto_page', 'proyecto_section', 'colonias_page', 'colonias_section', 'general', 'contacto_page'].includes(id)) && (
+          {!['general', 'contacto_page', 'recursos_page', 'blog_page'].includes(id) && (data.image !== undefined || ['proyecto_page', 'proyecto_section', 'colonias_page', 'colonias_section'].includes(id)) && (
             <div className="space-y-3">
               <label className="text-[10px] font-black text-brand-dark/40 uppercase tracking-widest flex items-center gap-2 mb-1">
                 <ImageIcon className="w-3.5 h-3.5" /> Imagen Principal
