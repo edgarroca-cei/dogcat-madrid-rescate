@@ -13,14 +13,21 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
-  const navLinks = [
-    { name: 'Inicio', href: '/' },
-    { name: 'Colonias felinas', href: '/colonias-felinas' },
-    { name: 'Dogcat Rescate', href: '/proyecto' },
-    { name: 'Recursos', href: '/recursos' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Contacto', href: '/contacto' },
+  const sectionsConfig = getContent('home_sections', {
+    order: ['Hero', 'Colonias', 'Proyecto', 'Blog'],
+    hidden: []
+  });
+
+  const rawNavLinks = [
+    { name: 'Inicio', href: '/', key: 'Hero' },
+    { name: 'Colonias felinas', href: '/colonias-felinas', key: 'Colonias' },
+    { name: 'Dogcat Rescate', href: '/proyecto', key: 'Proyecto' },
+    { name: 'Recursos', href: '/recursos', key: 'Recursos' },
+    { name: 'Blog', href: '/blog', key: 'Blog' },
+    { name: 'Contacto', href: '/contacto', key: 'Contacto' },
   ];
+
+  const navLinks = rawNavLinks.filter(link => !sectionsConfig.hidden.includes(link.key));
 
   // Helper to determine if we should use a standard anchor or a Link
   const renderLink = (link: { name: string; href: string }, isMobile: boolean) => {

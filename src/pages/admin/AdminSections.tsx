@@ -95,6 +95,8 @@ const SECTION_METADATA: any = {
   Colonias: { id: 'colonias_section', icon: Heart, color: 'text-red-500' },
   Proyecto: { id: 'proyecto_section', icon: ShieldAlert, color: 'text-blue-500' },
   Blog: { id: 'blog_section', icon: FileText, color: 'text-orange-500' },
+  Recursos: { id: 'recursos_page', icon: Globe, color: 'text-purple-500' },
+  Contacto: { id: 'contacto_page', icon: Mail, color: 'text-brand-green' },
 };
 
 type TabId = 'inicio' | 'colonias' | 'proyecto' | 'recursos' | 'blog' | 'contacto' | 'configuracion';
@@ -901,6 +903,44 @@ export function AdminSections() {
                         </div>
                       </div>
                       {isExpanded && renderSectionEditor(meta.id)}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Standalone Pages Visibility */}
+            <div className="bg-white rounded-3xl p-6 shadow-sm border border-brand-light/10">
+              <h3 className="text-sm font-black text-brand-dark/40 uppercase tracking-widest mb-6 flex items-center gap-2 text-brand-dark">
+                <Globe className="w-4 h-4" /> Páginas Independientes (Navegación)
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {['Recursos', 'Contacto'].map((pageId) => {
+                  const meta = SECTION_METADATA[pageId];
+                  const isHidden = sectionsConfig.hidden.includes(pageId);
+                  
+                  return (
+                    <div key={pageId} className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${
+                      isHidden ? 'bg-brand-dark/5 border-brand-light/5' : 'bg-brand-cream/10 border-brand-light/5'
+                    }`}>
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2.5 rounded-xl bg-white shadow-sm ${meta.color}`}>
+                          <meta.icon className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-brand-dark text-sm">{pageId}</h4>
+                          <p className="text-[10px] text-brand-dark/40 font-black uppercase">Página del menú</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => toggleVisibility(pageId)}
+                        className={`flex items-center gap-2 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
+                          isHidden ? 'bg-brand-dark/10 text-brand-dark/40' : 'bg-brand-green/10 text-brand-green'
+                        }`}
+                      >
+                        {isHidden ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                        {isHidden ? 'Oculto' : 'Visible'}
+                      </button>
                     </div>
                   );
                 })}
