@@ -234,6 +234,39 @@ app.delete('/api/mapas/:id', async (req, res) => {
   }
 });
 
+// --- BACKUP & RESTORE ---
+app.get('/api/admin/backup', (req, res) => {
+  const dbPath = path.join(__dirname, '../database.json');
+  if (fs.existsSync(dbPath)) {
+    res.download(dbPath, 'backup-dogcat.json');
+  } else {
+    res.status(404).json({ error: 'Archivo de base de datos no encontrado' });
+  }
+});
+
+app.post('/api/admin/restore', upload.single('database'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No se ha subido ningún archivo' });
+  }
+
+  const dbPath = path.join(__dirname, '../database.json');
+  try {
+    // Validar que el archivo sea un JSON válido antes de sobrescribir
+    const content = fs.readFileSync(req.file.path, 'utf-8');
+    JSON.parse(content); // Si esto falla, irá al catch
+
+    // Mover el archivo subido a la ubicación de la base de datos
+    fs.copyFileSync(req.file.path, dbPath);
+    
+    // Limpiar el archivo temporal
+    fs.unlinkSync(req.file.path);
+
+    res.json({ success: true, message: 'Base de datos restaurada correctamente. Reinicia para ver cambios.' });
+  } catch (err) {
+    res.status(400).json({ error: 'El archivo no es un JSON válido o está corrupto' });
+  }
+});
+
 // --- Serve React App with Dynamic SEO (Production Mode) ---
 const distPath = path.join(__dirname, '../dist');
 

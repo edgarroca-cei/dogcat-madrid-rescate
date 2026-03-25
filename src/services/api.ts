@@ -258,5 +258,25 @@ export const api = {
     } catch (err) {
       throw err;
     }
+  },
+
+  // Backup & Restore
+  getBackupUrl() {
+    return url('/admin/backup');
+  },
+
+  async restoreDatabase(file: File) {
+    try {
+      const formData = new FormData();
+      formData.append('database', file);
+      const res = await fetch(url('/admin/restore'), {
+        method: 'POST',
+        body: formData
+      });
+      if (!res.ok) throw new Error('Error al restaurar base de datos');
+      return await res.json();
+    } catch (err) {
+      throw err;
+    }
   }
 };

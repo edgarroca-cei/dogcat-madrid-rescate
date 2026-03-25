@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
-import { Plus, Edit2, Trash2, ExternalLink, Database } from 'lucide-react';
+import { Plus, Edit2, Trash2, ExternalLink, Database, Download, Upload as UploadIcon, AlertCircle, RefreshCw } from 'lucide-react';
 
 interface BlogPost {
   id: string;
@@ -118,6 +118,37 @@ export function AdminDashboard() {
       }
     }
   };
+  
+  const [dataActionLoading, setDataActionLoading] = useState(false);
+  const [dataMessage, setDataMessage] = useState({ type: '', text: '' });
+
+  const handleExport = () => {
+    window.location.href = api.getBackupUrl();
+  };
+
+  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!window.confirm("¿Estás seguro? Esto sobrescribirá todos los datos actuales con el contenido del archivo subido.")) {
+      e.target.value = '';
+      return;
+    }
+
+    setDataActionLoading(true);
+    setDataMessage({ type: '', text: '' });
+
+    try {
+      await api.restoreDatabase(file);
+      setDataMessage({ type: 'success', text: 'Datos restaurados con éxito. La página se recargará en 3 segundos.' });
+      setTimeout(() => window.location.reload(), 3000);
+    } catch (err) {
+      setDataMessage({ type: 'error', text: 'Error al importar los datos. Asegúrate de que es el archivo correcto.' });
+    } finally {
+      setDataActionLoading(false);
+      e.target.value = '';
+    }
+  };
 
   if (loading) {
     return (
@@ -210,6 +241,86 @@ export function AdminDashboard() {
               )}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* Persistence Management Section */}
+      <div className="mt-12 bg-white rounded-2xl shadow-sm border border-brand-dark/5 p-8">
+        <div className="flex items-center gap-3 mb-6">
+          <Database className="w-6 h-6 text-brand-dark/40" />
+          <div>
+            <h2 className="text-xl font-bold text-brand-dark">Gestión de Datos (Persistencia)</h2>
+            <p className="text-sm text-brand-dark/50">
+              Usa estas herramientas para evitar la pérdida de datos en entornos como Render.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Export */}
+          <div className="p-6 bg-brand-light/20 rounded-xl border border-brand-dark/5 hover:border-brand-green/30 transition-colors">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-white rounded-lg shadow-sm">
+                <Download className="w-6 h-6 text-blue-500" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-brand-dark mb-1">Copia de Seguridad</h3>
+                <p className="text-sm text-brand-dark/60 mb-4">
+                  Descarga todos los contenidos de la web (entradas, secciones, configuración) en un único archivo.
+                </p>
+                <button
+                  onClick={handleExport}
+                  className="inline-flex items-center gap-2 bg-white text-brand-dark px-4 py-2 rounded-xl font-semibold border border-brand-dark/10 hover:border-brand-green transition-all"
+                >
+                  <Download className="w-4 h-4" />
+                  Descargar backup.json
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Import */}
+          <div className="p-6 bg-brand-light/20 rounded-xl border border-brand-dark/5 hover:border-brand-green/30 transition-colors">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-white rounded-lg shadow-sm">
+                <UploadIcon className="w-6 h-6 text-brand-green" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-brand-dark mb-1">Restaurar Datos</h3>
+                <p className="text-sm text-brand-dark/60 mb-4">
+                  Sube un archivo de backup previamente descargado para recuperar todos los contenidos.
+                </p>
+                <label className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all cursor-pointer ${
+                  dataActionLoading ? 'bg-gray-100 text-gray-400' : 'bg-brand-green text-brand-dark hover:scale-105'
+                }`}>
+                  {dataActionLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <UploadIcon className="w-4 h-4" />}
+                  {dataActionLoading ? 'Importando...' : 'Subir y Restaurar'}
+                  <input
+                    type="file"
+                    accept=".json"
+                    className="hidden"
+                    onChange={handleImport}
+                    disabled={dataActionLoading}
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {dataMessage.text && (
+          <div className={`mt-6 p-4 rounded-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-2 ${
+            dataMessage.type === 'success' ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'
+          }`}>
+            {dataMessage.type === 'success' ? <Database className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
+            <span className="text-sm font-medium">{dataMessage.text}</span>
+          </div>
+        )}
+
+        <div className="mt-8 p-4 bg-amber-50 border border-amber-100 rounded-xl">
+          <p className="text-xs text-amber-800 leading-relaxed">
+            <strong>¿Por qué es esto necesario?</strong> En plataformas como Render, los cambios que haces en el panel se borran cada vez que subes una nueva versión de la web. Descarga una copia antes de actualizar y restáurala después para mantener todo tu trabajo.
+          </p>
         </div>
       </div>
     </div>
