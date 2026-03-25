@@ -370,6 +370,11 @@ if (fs.existsSync(distPath)) {
     }
   });
 
+  // API 404 handler - ensures API calls don't get the SPA's index.html
+  app.all('/api/*', (req, res) => {
+    res.status(404).json({ error: `Ruta API no encontrada: ${req.method} ${req.url}` });
+  });
+
   // Catch-all route to serve Vite/React SPA index.html for other routes
   app.get('*', (req, res) => {
     res.sendFile(path.join(distPath, 'index.html'));
