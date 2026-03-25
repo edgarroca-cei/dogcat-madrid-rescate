@@ -129,7 +129,12 @@ export function AdminDashboard() {
       const res = await fetch(api.getBackupUrl());
       if (!res.ok) throw new Error('Error al descargar');
       
-      const blob = await res.blob();
+      const text = await res.text();
+      if (text.trim().startsWith('<!doctype') || text.trim().startsWith('<html')) {
+        throw new Error('El servidor devolvió una página HTML en lugar de los datos. Probablemente un error de ruta.');
+      }
+      
+      const blob = new Blob([text], { type: 'application/json' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -140,8 +145,8 @@ export function AdminDashboard() {
       document.body.removeChild(a);
       
       setDataMessage({ type: 'success', text: 'Copia de seguridad descargada correctamente.' });
-    } catch (err) {
-      setDataMessage({ type: 'error', text: 'Error al generar la copia de seguridad.' });
+    } catch (err: any) {
+      setDataMessage({ type: 'error', text: err.message || 'Error al generar la copia de seguridad.' });
     } finally {
       setDataActionLoading(false);
     }

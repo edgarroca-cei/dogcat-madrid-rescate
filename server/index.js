@@ -255,6 +255,10 @@ app.delete('/api/mapas/:id', async (req, res) => {
   }
 });
 
+app.get('/api/test-json', (req, res) => {
+  res.json({ success: true, message: 'API is working and returning JSON' });
+});
+
 // --- BACKUP & RESTORE ---
 app.get('/api/admin/backup', (req, res) => {
   console.log('Solicitud de backup recibida');
