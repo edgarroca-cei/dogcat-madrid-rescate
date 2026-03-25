@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api';
-import { Plus, Pencil, Trash2, X, Save, Map as MapIcon, FileText, Building2, Search, Cat } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Save, Map as MapIcon, FileText, Building2, Search, Cat, Hospital } from 'lucide-react';
 
 export interface Mapa {
   id: string;
@@ -18,6 +18,7 @@ const AVAILABLE_ICONS = [
   { name: 'Building2', icon: Building2, label: 'Edificio/institución' },
   { name: 'Search', icon: Search, label: 'Búsqueda' },
   { name: 'Cat', icon: Cat, label: 'Gato/animal' },
+  { name: 'Hospital', icon: Hospital, label: 'Clínica/Hospital' },
 ];
 
 export function AdminMapas() {
@@ -122,6 +123,13 @@ export function AdminMapas() {
           description: "Registro histórico de gatos perdidos en la Comunidad de Madrid (2014-2020).",
           icon: "Search",
           order: 4
+        },
+        {
+          title: "Clínicas y Hospitales Veterinarios",
+          mid: "1cp8NLo2PU9w6Aa4si3Uc-yrvsXE-VEs",
+          description: "Centros veterinarios y hospitales de urgencia 24h en Madrid.",
+          icon: "Hospital",
+          order: 5
         }
       ];
 

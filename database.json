@@ -1,7 +1,40 @@
 {
   "posts": [],
   "settings": [],
-  "mapas": [],
+  "mapas": [
+    {
+      "id": "m1",
+      "title": "Subvenciones 2025",
+      "mid": "1uN0B5g0B0Ov_e7aO-LRi0y1jCudun5o",
+      "description": "Mapa de subvenciones para entidades locales en la convocatoria 2025.",
+      "icon": "Map",
+      "order": 1
+    },
+    {
+      "id": "m2",
+      "title": "Subvención Estatal Madrid",
+      "mid": "15nYt5nqHaz7tlOCxRHZWDEwkjJwelbs",
+      "description": "Mapa específico de subvenciones estatales para entidades locales en Madrid.",
+      "icon": "Building2",
+      "order": 2
+    },
+    {
+      "id": "m3",
+      "title": "Licitaciones y Contratos",
+      "mid": "1q6X-VYbUSUqpDXadtFH6Qw_Uz_ff_UQ",
+      "description": "Mapa de licitaciones y contratos menores relacionados con colonias felinas.",
+      "icon": "FileText",
+      "order": 3
+    },
+    {
+      "id": "m4",
+      "title": "Clínicas y Hospitales Veterinarios",
+      "mid": "1cp8NLo2PU9w6Aa4si3Uc-yrvsXE-VEs",
+      "description": "Centros veterinarios y hospitales de urgencia 24h en Madrid.",
+      "icon": "Hospital",
+      "order": 4
+    }
+  ],
   "site_content": [
     {
       "id": "home_sections",

@@ -33,6 +33,14 @@ const mockMapas = [
     description: "Mapa de licitaciones y contratos menores relacionados con colonias felinas.",
     icon: "FileText",
     order: 3
+  },
+  {
+    id: 'm4',
+    title: "Clínicas y Hospitales Veterinarios",
+    mid: "1cp8NLo2PU9w6Aa4si3Uc-yrvsXE-VEs",
+    description: "Centros veterinarios y hospitales de urgencia 24h en Madrid.",
+    icon: "Hospital",
+    order: 4
   }
 ];
 
