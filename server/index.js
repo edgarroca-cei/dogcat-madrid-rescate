@@ -14,6 +14,46 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
+// --- BACKUP & RESTORE (HIGH PRIORITY) ---
+app.get('/api/test-json', (req, res) => {
+  res.json({ success: true, message: 'API is working and returning JSON' });
+});
+
+app.get('/api/admin/backup', (req, res) => {
+  console.log('Solicitud de backup recibida');
+  const dbPath = path.join(__dirname, '../database.json');
+  if (fs.existsSync(dbPath)) {
+    res.download(dbPath, 'backup-dogcat.json');
+  } else {
+    console.error('Base de datos no encontrada en:', dbPath);
+    res.status(404).json({ error: 'Archivo de base de datos no encontrado' });
+  }
+});
+
+app.post('/api/admin/restore', upload.single('database'), async (req, res) => {
+  console.log('Solicitud de restauración recibida');
+  if (!req.file) {
+    return res.status(400).json({ error: 'No se ha subido ningún archivo' });
+  }
+
+  const dbPath = path.join(__dirname, '../database.json');
+  try {
+    const content = fs.readFileSync(req.file.path, 'utf-8');
+    JSON.parse(content);
+    fs.copyFileSync(req.file.path, dbPath);
+    await reload();
+    fs.unlinkSync(req.file.path);
+    res.json({ success: true, message: 'Base de datos restaurada correctamente.' });
+  } catch (err) {
+    console.error('Error en restauración:', err);
+    try {
+      const content = fs.readFileSync(req.file.path, 'utf-8');
+      console.log('Inicio del contenido del archivo recibido:', content.substring(0, 200));
+    } catch (readErr) {}
+    res.status(400).json({ error: `Error en la restauración: ${err.message}` });
+  }
+});
+
 // Configurar Subida de Archivos con Multer
 const uploadsDir = path.join(__dirname, '../uploads');
 if (!fs.existsSync(uploadsDir)) {
@@ -255,56 +295,7 @@ app.delete('/api/mapas/:id', async (req, res) => {
   }
 });
 
-app.get('/api/test-json', (req, res) => {
-  res.json({ success: true, message: 'API is working and returning JSON' });
-});
 
-// --- BACKUP & RESTORE ---
-app.get('/api/admin/backup', (req, res) => {
-  console.log('Solicitud de backup recibida');
-  const dbPath = path.join(__dirname, '../database.json');
-  if (fs.existsSync(dbPath)) {
-    res.download(dbPath, 'backup-dogcat.json');
-  } else {
-    console.error('Base de datos no encontrada en:', dbPath);
-    res.status(404).json({ error: 'Archivo de base de datos no encontrado' });
-  }
-});
-
-app.post('/api/admin/restore', upload.single('database'), async (req, res) => {
-  console.log('Solicitud de restauración recibida');
-  if (!req.file) {
-    return res.status(400).json({ error: 'No se ha subido ningún archivo' });
-  }
-
-  const dbPath = path.join(__dirname, '../database.json');
-  try {
-    // Validar que el archivo sea un JSON válido antes de sobrescribir
-    const content = fs.readFileSync(req.file.path, 'utf-8');
-    JSON.parse(content); // Si esto falla, irá al catch
-
-    // Mover el archivo subido a la ubicación de la base de datos
-    fs.copyFileSync(req.file.path, dbPath);
-    
-    // Recargar en memoria
-    await reload();
-
-    // Limpiar el archivo temporal
-    fs.unlinkSync(req.file.path);
-
-    res.json({ success: true, message: 'Base de datos restaurada correctamente.' });
-  } catch (err) {
-    console.error('Error en restauración:', err);
-    // Loguear el inicio del contenido para ver qué estamos recibiendo
-    try {
-      const content = fs.readFileSync(req.file.path, 'utf-8');
-      console.log('Inicio del contenido del archivo recibido:', content.substring(0, 200));
-    } catch (readErr) {
-      console.error('No se pudo leer el archivo para debug:', readErr);
-    }
-    res.status(400).json({ error: `Error en la restauración: ${err.message}` });
-  }
-});
 
 // --- Serve React App with Dynamic SEO (Production Mode) ---
 const distPath = path.join(__dirname, '../dist');
