@@ -287,7 +287,15 @@ app.post('/api/admin/restore', upload.single('database'), (req, res) => {
 
     res.json({ success: true, message: 'Base de datos restaurada correctamente. Reinicia para ver cambios.' });
   } catch (err) {
-    res.status(400).json({ error: 'El archivo no es un JSON válido o está corrupto' });
+    console.error('Error en restauración:', err);
+    // Loguear el inicio del contenido para ver qué estamos recibiendo
+    try {
+      const content = fs.readFileSync(req.file.path, 'utf-8');
+      console.log('Inicio del contenido del archivo recibido:', content.substring(0, 200));
+    } catch (readErr) {
+      console.error('No se pudo leer el archivo para debug:', readErr);
+    }
+    res.status(400).json({ error: `Error en la restauración: ${err.message}` });
   }
 });
 

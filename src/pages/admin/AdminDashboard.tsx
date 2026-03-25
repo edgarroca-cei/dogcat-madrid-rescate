@@ -160,11 +160,13 @@ export function AdminDashboard() {
     setDataMessage({ type: '', text: '' });
 
     try {
-      await api.restoreDatabase(file);
-      setDataMessage({ type: 'success', text: 'Datos restaurados con éxito. La página se recargará en 3 segundos.' });
-      setTimeout(() => window.location.reload(), 3000);
-    } catch (err) {
-      setDataMessage({ type: 'error', text: 'Error al importar los datos. Asegúrate de que es el archivo correcto.' });
+      const result = await api.restoreDatabase(file);
+      if (result.success) {
+        setDataMessage({ type: 'success', text: 'Datos restaurados con éxito. La página se recargará en 2 segundos.' });
+        setTimeout(() => window.location.reload(), 2000);
+      } else {
+        setDataMessage({ type: 'error', text: result.error || 'Error al importar los datos. Asegúrate de que es el archivo correcto.' });
+      }
     } finally {
       setDataActionLoading(false);
       e.target.value = '';
