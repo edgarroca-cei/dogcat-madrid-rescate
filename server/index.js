@@ -14,6 +14,24 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
+// Configurar Subida de Archivos con Multer
+const uploadsDir = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadsDir)
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'portada-' + uniqueSuffix + ext);
+  }
+});
+const upload = multer({ storage: storage });
+
 // --- BACKUP & RESTORE (HIGH PRIORITY) ---
 app.get('/api/test-json', (req, res) => {
   res.json({ success: true, message: 'API is working and returning JSON' });
@@ -53,24 +71,6 @@ app.post('/api/admin/restore', upload.single('database'), async (req, res) => {
     res.status(400).json({ error: `Error en la restauración: ${err.message}` });
   }
 });
-
-// Configurar Subida de Archivos con Multer
-const uploadsDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadsDir)
-  },
-  filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname);
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, 'portada-' + uniqueSuffix + ext);
-  }
-});
-const upload = multer({ storage: storage });
 
 // Servir estáticamente la carpeta de subidas para desarrollo y producción
 app.use('/uploads', express.static(uploadsDir));
