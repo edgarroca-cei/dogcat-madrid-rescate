@@ -49,10 +49,11 @@ export function Colonias() {
             <div className="relative aspect-[4/3] w-full max-w-md mx-auto lg:max-w-none">
               <div className="absolute inset-0 bg-brand-green/20 rounded-[2rem] transform -rotate-3 scale-105"></div>
               <img 
-                src={coloniasContent.image || "/cat_colony.jpg"} 
+                src={coloniasContent.image || "/cat_colony.webp"} 
                 alt="Gatos de colonia alimentándose" 
                 loading="lazy"
-                className="relative w-full h-full object-cover rounded-[2rem] shadow-lg"
+                decoding="async"
+                className="relative w-full h-full object-cover rounded-[2rem] shadow-lg transition-all duration-500"
               />
             </div>
           </div>

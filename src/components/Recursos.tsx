@@ -146,7 +146,9 @@ export function Recursos() {
               <img 
                 src={pageContent.image} 
                 alt={pageContent.title} 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-opacity duration-500"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/20 to-transparent"></div>
             </div>

@@ -69,10 +69,11 @@ export function Proyecto() {
           {/* Background Image Overlay */}
           <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
             <img 
-              src={proyectoContent.image || "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=1000"} 
+              src={proyectoContent.image || "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=1000&fm=webp"} 
               alt="Fondo perros" 
               loading="lazy"
-              className="w-full h-full object-cover mix-blend-multiply"
+              decoding="async"
+              className="w-full h-full object-cover mix-blend-multiply transition-opacity duration-500"
             />
           </div>
 

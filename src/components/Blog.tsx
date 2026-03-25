@@ -71,11 +71,13 @@ export function Blog() {
                 className={`${story.color} rounded-3xl overflow-hidden shadow-xl flex flex-col group hover:-translate-y-1 transition-transform duration-300`}
               >
                 <div className="relative h-32 sm:h-48 overflow-hidden">
-                  <img 
-                    src={getFileUrl(story.image)} 
-                    alt={story.title} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                  />
+                    <img 
+                      src={`${getFileUrl(story.image)}?auto=format&fit=crop&q=80&w=800&fm=webp`} 
+                      alt={story.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
                 </div>
                 <div className="p-4 sm:p-6 flex flex-col flex-grow">
                   <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 leading-tight">

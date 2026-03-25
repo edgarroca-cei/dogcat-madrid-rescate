@@ -102,10 +102,11 @@ export function ColoniasFelinasPage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
             <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-xl">
               <img 
-                src={pageContent.image || "/cat_colony.jpg"} 
-                alt="Gatos de colonia alimentándose" 
+                src={pageContent.image} 
+                alt={pageContent.title} 
+                className="w-full h-full object-cover transition-opacity duration-500"
                 loading="lazy"
-                className="w-full h-full object-cover"
+                decoding="async"
               />
             </div>
             <div className="space-y-6">

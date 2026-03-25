@@ -103,10 +103,11 @@ export function ProyectoPage() {
           <img 
             src={pageContent.image || "https://images.pexels.com/photos/9000185/pexels-photo-9000185.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp"} 
             alt="Gato rescatado descansando tranquilamente" 
-            fetchPriority="high"
+            loading="lazy"
+            decoding="async"
             width={1200}
             height={400}
-            className="w-full h-[300px] md:h-[400px] object-cover"
+            className="w-full h-[300px] md:h-[400px] object-cover transition-opacity duration-500"
           />
         </div>
       </div>

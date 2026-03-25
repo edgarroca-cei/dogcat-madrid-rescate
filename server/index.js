@@ -5,6 +5,7 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import sharp from 'sharp';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,11 +35,31 @@ const upload = multer({ storage: storage });
 // Servir estáticamente la carpeta de subidas para desarrollo y producción
 app.use('/uploads', express.static(uploadsDir));
 
-app.post('/api/upload', upload.single('image'), (req, res) => {
+app.post('/api/upload', upload.single('image'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No se ha subido ningún archivo' });
   }
-  res.json({ url: `/uploads/${req.file.filename}` });
+
+  const originalPath = req.file.path;
+  const targetName = path.basename(originalPath, path.extname(originalPath)) + '.webp';
+  const targetPath = path.join(uploadsDir, targetName);
+
+  try {
+    // Optimizar imagen con sharp
+    await sharp(originalPath)
+      .resize(1200, null, { withoutEnlargement: true })
+      .webp({ quality: 80 })
+      .toFile(targetPath);
+
+    // Eliminar el archivo original para ahorrar espacio
+    fs.unlinkSync(originalPath);
+
+    res.json({ url: `/uploads/${targetName}` });
+  } catch (err) {
+    console.error('Error al procesar la imagen con sharp:', err);
+    // Si falla el procesamiento (ej: formato no soportado), devolver el original
+    res.json({ url: `/uploads/${req.file.filename}` });
+  }
 });
 
 // --- POSTS ---

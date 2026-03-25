@@ -49,10 +49,11 @@ export function Hero() {
           <div className="relative mt-6 lg:mt-0 max-w-md mx-auto lg:max-w-none">
             <div className="absolute inset-0 bg-brand-green/20 rounded-[2rem] transform rotate-3 scale-105 -z-10"></div>
             <img 
-              src={heroContent.image || "/dog_cat_hero.png"} 
+              src={heroContent.image || "/dog_cat_hero.webp"} 
               alt="Perro y gato rescatados" 
               fetchPriority="high"
-              className="relative w-full h-[250px] sm:h-[350px] lg:h-[450px] object-cover rounded-[2rem] shadow-2xl"
+              decoding="sync"
+              className="relative w-full h-[250px] sm:h-[350px] lg:h-[450px] object-cover rounded-[2rem] shadow-2xl transition-opacity duration-300"
             />
           </div>
         </div>
