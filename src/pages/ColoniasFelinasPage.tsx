@@ -1,80 +1,54 @@
 import { Heart, Shield, Users, HelpCircle, Type } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { useContent } from '../contexts/ContentContext';
+import { getFileUrl } from '../services/api';
 
 export function ColoniasFelinasPage() {
   const { getContent } = useContent();
   const pageContent = getContent('colonias_page', {
     title: 'Intervención y apoyo para las colonias felinas de Madrid',
     text: 'En DOGCAT Madrid centramos nuestros esfuerzos en el terreno, respaldando de forma integral a las gestoras de colonias.',
+    image: '/uploads/cat_colony.webp',
     cer_title: 'Nuestro apoyo al método C.E.R.',
     cer_text: 'Facilitamos los recursos necesarios para que las gestoras de Madrid puedan aplicar el método C.E.R. (Captura, Esterilización y Retorno) con garantías de éxito.',
+    cer_step1_icon: 'C',
     cer_step1_title: 'C: Captura y Material',
     cer_step1_text: 'Donamos jaulas trampa y transportines especializados para que el proceso de captura sea seguro y respetuoso con el animal.',
+    cer_step2_icon: 'E',
     cer_step2_title: 'E: Esterilización y Veterinaria',
     cer_step2_text: 'Abonamos directamente las facturas de esterilización, vacunación e identificación en centros clínicos colaboradores.',
+    cer_step3_icon: 'R',
     cer_step3_title: 'R: Retorno y Alimentación',
     cer_step3_text: 'Tras el retorno a su colonia, seguimos apoyando a las alimentadoras mediante la donación periódica de pienso y comida húmeda.',
     donations_title: '¿A dónde va tu donativo?',
-    donations_text: 'No recibimos ayudas públicas suficientes. Tu solidaridad nos permite seguir enviando alimento y pagando facturas veterinarias para salvaguardar a los gatos de Madrid.'
+    donations_text: 'No recibimos ayudas públicas suficientes. Tu solidaridad nos permite seguir enviando alimento y pagando facturas veterinarias para salvaguardar a los gatos de Madrid.',
+    // Dynamic Needs
+    n1_icon: 'LifeBuoy', n1_title: 'Material de captura', n1_text: 'Jaulas trampa y transportines para rescates seguros.',
+    n2_icon: 'Stethoscope', n2_title: 'Atención veterinaria', n2_text: 'Esterilizaciones, vacunas y curas de urgencia.',
+    n3_icon: 'Fish', n3_title: 'Alimentación diaria', n3_text: 'Pienso y comida húmeda para mantenerlos fuertes.',
+    n4_icon: 'Home', n4_title: 'Refugios de invierno', n4_text: 'Casetas para protegerlos del frío y la lluvia.',
+    // Dynamic Benefits
+    b1_icon: 'Heart', b1_title: 'Bienestar animal', b1_text: 'Mejoramos la salud de los gatos, evitando peleas, enfermedades y camadas indeseadas.',
+    b2_icon: 'Shield', b2_title: 'Salud pública', b2_text: 'Una colonia controlada y sana es un beneficio para todo el vecindario.',
+    b3_icon: 'Users', b3_title: 'Convivencia', b3_text: 'Reducimos los ruidos y marcajes, mejorando la convivencia vecinal.'
   });
 
   const getLucideIcon = (name: string) => {
-    if (!name) return null;
-    
-    // First try the exact name as provided
-    if ((LucideIcons as any)[name]) return (LucideIcons as any)[name];
-
-    // Convert kebab-case or space-separated to PascalCase
-    const pascalName = name
-      .replace(/[-_ ]+/g, ' ')
-      .split(' ')
-      .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-      .join('');
-      
-    if ((LucideIcons as any)[pascalName]) return (LucideIcons as any)[pascalName];
-    
-    // Also try with 'Icon' suffix just in case (some environments do this)
-    if ((LucideIcons as any)[pascalName + 'Icon']) return (LucideIcons as any)[pascalName + 'Icon'];
-
-    return null;
+    if (!name) return HelpCircle;
+    const Icon = (LucideIcons as any)[name] || HelpCircle;
+    return Icon;
   };
 
-  const renderStepIcon = (iconName: string) => {
-    if (!iconName) return <Type className="w-4 h-4" />;
+  const renderIcon = (iconName: string, className: string = "w-8 h-8") => {
+    if (!iconName) return <HelpCircle className={className} />;
     
-    // If it's a short string (1-2 chars), render as text
     if (iconName.length <= 2) {
-      return iconName;
+      return <span className="font-black text-lg">{iconName}</span>;
     }
 
-    // Otherwise try to render as Lucide icon
-    const Icon = getLucideIcon(iconName) || HelpCircle;
-    return <Icon className="w-5 h-5" />;
+    const Icon = getLucideIcon(iconName);
+    return <Icon className={className} />;
   };
-
-  const needs = [
-    {
-      title: 'Material de captura',
-      description: 'Jaulas trampa y transportines para rescates seguros.',
-      icon: <LucideIcons.LifeBuoy className="w-8 h-8" />,
-    },
-    {
-      title: 'Atención veterinaria',
-      description: 'Esterilizaciones, vacunas y curas de urgencia.',
-      icon: <LucideIcons.Stethoscope className="w-8 h-8" />,
-    },
-    {
-      title: 'Alimentación diaria',
-      description: 'Pienso y comida húmeda para mantenerlos fuertes.',
-      icon: <LucideIcons.Fish className="w-8 h-8" />,
-    },
-    {
-      title: 'Refugios de invierno',
-      description: 'Casetas para protegerlos del frío y la lluvia.',
-      icon: <LucideIcons.Home className="w-8 h-8" />,
-    },
-  ];
 
   return (
     <div className="pt-28 pb-16 md:pt-32 md:pb-20 bg-brand-light text-brand-dark min-h-screen">
@@ -102,7 +76,7 @@ export function ColoniasFelinasPage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
             <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-xl">
               <img 
-                src={pageContent.image} 
+                src={getFileUrl(pageContent.image)} 
                 alt={pageContent.title} 
                 className="w-full h-full object-cover transition-opacity duration-500"
                 loading="lazy"
@@ -117,39 +91,19 @@ export function ColoniasFelinasPage() {
                 </p>
               )}
               <ul className="space-y-4">
-                {pageContent.cer_step1_title && (
-                  <li className="flex gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-brand-green text-brand-dark flex items-center justify-center font-black shadow-md">
-                      {renderStepIcon(pageContent.cer_step1_icon || 'C')}
-                    </div>
-                    <div>
-                      <strong className="block text-lg">{pageContent.cer_step1_title}</strong>
-                      {pageContent.cer_step1_text && <span className="text-brand-dark/70">{pageContent.cer_step1_text}</span>}
-                    </div>
-                  </li>
-                )}
-                {pageContent.cer_step2_title && (
-                  <li className="flex gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-brand-green text-brand-dark flex items-center justify-center font-black shadow-md">
-                      {renderStepIcon(pageContent.cer_step2_icon || 'E')}
-                    </div>
-                    <div>
-                      <strong className="block text-lg">{pageContent.cer_step2_title}</strong>
-                      {pageContent.cer_step2_text && <span className="text-brand-dark/70">{pageContent.cer_step2_text}</span>}
-                    </div>
-                  </li>
-                )}
-                {pageContent.cer_step3_title && (
-                  <li className="flex gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-brand-green text-brand-dark flex items-center justify-center font-black shadow-md">
-                      {renderStepIcon(pageContent.cer_step3_icon || 'R')}
-                    </div>
-                    <div>
-                      <strong className="block text-lg">{pageContent.cer_step3_title}</strong>
-                      {pageContent.cer_step3_text && <span className="text-brand-dark/70">{pageContent.cer_step3_text}</span>}
-                    </div>
-                  </li>
-                )}
+                {[1, 2, 3].map(step => (
+                  pageContent[`cer_step${step}_title`] && (
+                    <li key={step} className="flex gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-brand-green text-brand-dark flex items-center justify-center font-black shadow-md">
+                        {renderIcon(pageContent[`cer_step${step}_icon`], "w-5 h-5")}
+                      </div>
+                      <div>
+                        <strong className="block text-lg">{pageContent[`cer_step${step}_title`]}</strong>
+                        {pageContent[`cer_step${step}_text`] && <span className="text-brand-dark/70">{pageContent[`cer_step${step}_text`]}</span>}
+                      </div>
+                    </li>
+                  )
+                ))}
               </ul>
             </div>
           </div>
@@ -168,13 +122,13 @@ export function ColoniasFelinasPage() {
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {needs.map((need, index) => (
-                <div key={index} className="bg-white p-6 rounded-2xl shadow-sm text-center">
+              {[1, 2, 3, 4].map((num) => (
+                <div key={num} className="bg-white p-6 rounded-2xl shadow-sm text-center">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-green/20 text-brand-green mb-4">
-                    {need.icon}
+                    {renderIcon(pageContent[`n${num}_icon`])}
                   </div>
-                  <h3 className="font-bold text-lg mb-2">{need.title}</h3>
-                  <p className="text-sm text-brand-dark/70">{need.description}</p>
+                  <h3 className="font-bold text-lg mb-2">{pageContent[`n${num}_title`]}</h3>
+                  <p className="text-sm text-brand-dark/70 font-medium">{pageContent[`n${num}_text`]}</p>
                 </div>
               ))}
             </div>
@@ -192,21 +146,15 @@ export function ColoniasFelinasPage() {
 
         {/* Benefits */}
         <div className="grid md:grid-cols-3 gap-8 text-center">
-          <div className="p-6">
-            <Heart className="w-12 h-12 text-brand-green mx-auto mb-4" />
-            <h3 className="font-bold text-xl mb-2">Bienestar animal</h3>
-            <p className="text-brand-dark/70">Mejoramos la salud de los gatos, evitando peleas, enfermedades y camadas indeseadas.</p>
-          </div>
-          <div className="p-6">
-            <Shield className="w-12 h-12 text-brand-green mx-auto mb-4" />
-            <h3 className="font-bold text-xl mb-2">Salud pública</h3>
-            <p className="text-brand-dark/70">Una colonia controlada y sana es un beneficio para todo el vecindario, controlando plagas de forma natural.</p>
-          </div>
-          <div className="p-6">
-            <Users className="w-12 h-12 text-brand-green mx-auto mb-4" />
-            <h3 className="font-bold text-xl mb-2">Convivencia</h3>
-            <p className="text-brand-dark/70">Reducimos los ruidos por celo y marcajes, mejorando la convivencia entre vecinos y felinos.</p>
-          </div>
+          {[1, 2, 3].map(num => (
+            <div key={num} className="p-6">
+              <div className="text-brand-green mx-auto mb-4 flex justify-center">
+                {renderIcon(pageContent[`b${num}_icon`], "w-12 h-12")}
+              </div>
+              <h3 className="font-bold text-xl mb-2">{pageContent[`b${num}_title`]}</h3>
+              <p className="text-brand-dark/70 font-medium">{pageContent[`b${num}_text`]}</p>
+            </div>
+          ))}
         </div>
 
       </div>

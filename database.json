@@ -125,12 +125,12 @@
     },
     {
       "id": "hero",
-      "content": "{\"badge\":\"Rescate animal en Madrid\",\"title\":\"Tu donativo tiene un impacto directo y real\",\"text\":\"Nuestra labor se desarrolla en los distintos distritos de Madrid, respaldando a quienes velan por el bienestar felino los 365 días del año. Tu aportación se transforma de manera inmediata en alimento, atención veterinaria de urgencia y material de captura ético.\",\"buttonText\":\"Donar ahora\",\"image\":\"/dog_cat_hero.png\"}",
+      "content": "{\"badge\":\"Rescate animal en Madrid\",\"title\":\"Tu donativo tiene un impacto directo y real\",\"text\":\"Nuestra labor se desarrolla en los distintos distritos de Madrid, respaldando a quienes velan por el bienestar felino los 365 días del año. Tu aportación se transforma de manera inmediata en alimento, atención veterinaria de urgencia y material de captura ético.\",\"buttonText\":\"Donar ahora\",\"image\":\"/uploads/dog_cat_hero.png\"}",
       "updatedAt": "2026-03-25T12:23:21.461Z"
     },
     {
       "id": "colonias_section",
-      "content": "{\"badge\":\"Donaciones y recursos\",\"title\":\"Ayuda a las colonias felinas\",\"text\":\"Ayudamos a la gestión de colonias mediante el método C.E.R. (Captura, Esterilización y Retorno). Tu aportación mensual o puntual se destina íntegramente a cubrir sus necesidades básicas:\",\"image\":\"/cat_colony.jpg\",\"n4_title\":\"Refugios\"}",
+      "content": "{\"badge\":\"Donaciones y recursos\",\"title\":\"Ayuda a las colonias felinas\",\"text\":\"Ayudamos a la gestión de colonias mediante el método C.E.R. (Captura, Esterilización y Retorno). Tu aportación mensual o puntual se destina íntegramente a cubrir sus necesidades básicas:\",\"image\":\"/uploads/cat_colony.jpg\",\"n4_title\":\"Refugios\"}",
       "updatedAt": "2026-03-25T12:23:21.462Z"
     },
     {
@@ -140,7 +140,7 @@
     },
     {
       "id": "colonias_page",
-      "content": "{\"title\":\"Intervención y apoyo para las colonias felinas de Madrid\",\"text\":\"En DOGCAT Madrid centramos nuestros esfuerzos en el terreno, respaldando de forma integral a las gestoras de colonias.\",\"image\":\"/cat_colony.jpg\",\"cer_title\":\"Nuestro apoyo al método C.E.R.\",\"cer_text\":\"Facilitamos los recursos necesarios para que las gestoras de Madrid puedan aplicar el método C.E.R. (Captura, Esterilización y Retorno) con garantías de éxito.\",\"cer_step1_title\":\"Captura y material\",\"cer_step1_text\":\"Donamos jaulas trampa y transportines especializados para que el proceso de captura sea seguro y respetuoso con el animal.\",\"cer_step1_icon\":\"C\",\"cer_step2_title\":\"Esterilización y veterinaria\",\"cer_step2_text\":\"Abonamos directamente las facturas de esterilización, vacunación e identificación en centros clínicos colaboradores.\",\"cer_step2_icon\":\"E\",\"cer_step3_title\":\"Retorno y alimentación\",\"cer_step3_text\":\"Tras el retorno a su colonia, seguimos apoyando a las alimentadoras mediante la donación periódica de pienso y comida húmeda.\",\"cer_step3_icon\":\"R\",\"donations_title\":\"¿A dónde va tu donativo?\",\"donations_text\":\"No recibimos ayudas públicas suficientes. Dependemos de la solidaridad de personas como tú.\"}",
+      "content": "{\"title\":\"Intervención y apoyo para las colonias felinas de Madrid\",\"text\":\"En DOGCAT Madrid centramos nuestros esfuerzos en el terreno, respaldando de forma integral a las gestoras de colonias.\",\"image\":\"/uploads/cat_colony.jpg\",\"cer_title\":\"Nuestro apoyo al método C.E.R.\",\"cer_text\":\"Facilitamos los recursos necesarios para que las gestoras de Madrid puedan aplicar el método C.E.R. (Captura, Esterilización y Retorno) con garantías de éxito.\",\"cer_step1_title\":\"Captura y material\",\"cer_step1_text\":\"Donamos jaulas trampa y transportines especializados para que el proceso de captura sea seguro y respetuoso con el animal.\",\"cer_step1_icon\":\"C\",\"cer_step2_title\":\"Esterilización y veterinaria\",\"cer_step2_text\":\"Abonamos directamente las facturas de esterilización, vacunación e identificación en centros clínicos colaboradores.\",\"cer_step2_icon\":\"E\",\"cer_step3_title\":\"Retorno y alimentación\",\"cer_step3_text\":\"Tras el retorno a su colonia, seguimos apoyando a las alimentadoras mediante la donación periódica de pienso y comida húmeda.\",\"cer_step3_icon\":\"R\",\"donations_title\":\"¿A dónde va tu donativo?\",\"donations_text\":\"No recibimos ayudas públicas suficientes. Dependemos de la solidaridad de personas como tú.\"}",
       "updatedAt": "2026-03-25T12:23:21.463Z"
     },
     {

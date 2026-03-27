@@ -54,8 +54,11 @@ const mockSettings = {
 // Helper: en Hostinger las rutas van a archivos .php
 // En Render o Local van a las rutas Express originales (sin .php)
 function url(path: string) {
-  if (usePHP) return `${API_URL}${path}.php`;
-  return `${API_URL}${path}`;
+  const [basePath, query] = path.split('?');
+  const isPHP = usePHP;
+  const mainPath = isPHP ? `${basePath}.php` : basePath;
+  const finalPath = query ? `${mainPath}?${query}` : mainPath;
+  return `${API_URL}${finalPath}`;
 }
 
 // Helper para resolver URLs de archivos (especialmente para local dev)
@@ -88,12 +91,16 @@ export const api = {
   // Blog Posts
   async getBlogPosts() {
     try {
-      const res = await fetch(url('/posts'));
+      const res = await fetch(url(`/posts?t=${Date.now()}`));
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {
-      console.warn("API falló, usando datos de prueba (Modo Demo)");
-      return blogPosts;
+      console.error("API Error (Posts):", err);
+      if (isDev) {
+        console.warn("Usando datos de prueba en desarrollo");
+        return blogPosts;
+      }
+      throw err; // In production, we want to know it failed
     }
   },
   
@@ -101,8 +108,8 @@ export const api = {
     try {
       // Diferente manejo de IDs en Express vs PHP
       const endpoint = usePHP
-        ? `${API_URL}/posts.php?id=${encodeURIComponent(id)}`
-        : `${API_URL}/posts/${encodeURIComponent(id)}`;
+        ? `${API_URL}/posts.php?id=${encodeURIComponent(id)}&t=${Date.now()}`
+        : `${API_URL}/posts/${encodeURIComponent(id)}?t=${Date.now()}`;
         
       const res = await fetch(endpoint);
       if (!res.ok) throw new Error('Backend not found');
@@ -124,7 +131,9 @@ export const api = {
       // Aseguramos que devolvemos el objeto con la URL del servidor
       return await res.json();
     } catch (err) {
-      return { url: URL.createObjectURL(file) };
+      console.error("Error uploading image:", err);
+      if (isDev) return { url: URL.createObjectURL(file) };
+      throw err;
     }
   },
   
@@ -138,7 +147,9 @@ export const api = {
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {
-      return { success: true, id: postData.id || 'new-id' };
+      console.error("API Error (Save Post):", err);
+      if (isDev) return { success: true, id: postData.id || 'new-id' };
+      throw err;
     }
   },
   
@@ -159,8 +170,8 @@ export const api = {
   async getDonationSettings() {
     try {
       const endpoint = usePHP
-        ? `${API_URL}/settings.php`
-        : `${API_URL}/settings/donations`;
+        ? `${API_URL}/settings.php?t=${Date.now()}`
+        : `${API_URL}/settings/donations?t=${Date.now()}`;
       const res = await fetch(endpoint);
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
@@ -189,7 +200,7 @@ export const api = {
   // --- MULTIMEDIA ---
   async getMedia() {
     try {
-      const res = await fetch(url('/media'));
+      const res = await fetch(url(`/media?t=${Date.now()}`));
       if (!res.ok) throw new Error('Error al obtener la galería');
       return res.json();
     } catch (err) {
@@ -200,7 +211,10 @@ export const api = {
 
   async deleteMedia(filename: string) {
     try {
-      const res = await fetch(url(`/media/${filename}`), {
+      const endpoint = usePHP
+        ? `${API_URL}/media.php?filename=${encodeURIComponent(filename)}`
+        : `${API_URL}/media/${encodeURIComponent(filename)}`;
+      const res = await fetch(endpoint, {
         method: 'DELETE',
       });
       if (!res.ok) throw new Error('Error al eliminar el archivo');
@@ -214,7 +228,7 @@ export const api = {
   // Mapas
   async getMapas() {
     try {
-      const res = await fetch(url('/mapas'));
+      const res = await fetch(url(`/mapas?t=${Date.now()}`));
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {
@@ -256,14 +270,21 @@ export const api = {
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {
-      console.warn("API falló, usando datos por defecto");
-      return {};
+      console.error("API Error (Site Content):", err);
+      if (isDev) {
+        console.warn("Usando datos por defecto en desarrollo");
+        return {};
+      }
+      throw err;
     }
   },
 
   async getSiteContent(id: string) {
     try {
-      const res = await fetch(url(`/site-content/${id}`));
+      const endpoint = usePHP
+        ? `${API_URL}/site-content.php?id=${encodeURIComponent(id)}&t=${Date.now()}`
+        : `${API_URL}/site-content/${encodeURIComponent(id)}?t=${Date.now()}`;
+      const res = await fetch(endpoint);
       if (!res.ok) throw new Error('Backend not found');
       return await res.json();
     } catch (err) {

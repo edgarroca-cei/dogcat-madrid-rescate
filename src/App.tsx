@@ -11,6 +11,7 @@ import { BlogPost } from './pages/BlogPost';
 import { AvisoLegalPage } from './pages/AvisoLegalPage';
 import { PoliticaPrivacidadPage } from './pages/PoliticaPrivacidadPage';
 import { PoliticaCookiesPage } from './pages/PoliticaCookiesPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 import { ScrollToTop } from './components/ScrollToTop';
 import { AuthProvider } from './contexts/AuthContext';
 import { ContentProvider } from './contexts/ContentContext';
@@ -63,6 +64,7 @@ export default function App() {
                         <Route path="/aviso-legal" element={<AvisoLegalPage />} />
                         <Route path="/privacidad" element={<PoliticaPrivacidadPage />} />
                         <Route path="/cookies" element={<PoliticaCookiesPage />} />
+                        <Route path="*" element={<NotFoundPage />} />
                       </Routes>
                     </div>
                     <Footer />

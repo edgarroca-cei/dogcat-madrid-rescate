@@ -67,7 +67,7 @@ export function BlogList() {
             </h1>
           )}
           {pageContent.text && (
-            <p className="text-brand-dark/80 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-8">
+            <p className="text-brand-light/80 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-8">
               {pageContent.text}
             </p>
           )}

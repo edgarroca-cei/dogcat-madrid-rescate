@@ -3,12 +3,16 @@ import * as LucideIcons from 'lucide-react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useContent } from '../contexts/ContentContext';
+import { getFileUrl } from '../services/api';
 
 export function ProyectoPage() {
   const { getContent } = useContent();
   const pageContent = getContent('proyecto_page', {
     title: 'Proyecto Dogcat Rescate',
     text: 'Un proyecto técnico de bienestar animal diseñado para dar respuesta profesional a emergencias. Buscamos los recursos para hacerlo realidad.',
+    image: 'https://images.pexels.com/photos/9000185/pexels-photo-9000185.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp',
+    fleet_img1: '/uploads/Gemini_Generated_Image_g04w14g04w14g04w.png',
+    fleet_img2: '/uploads/Gemini_Generated_Image_plysslplysslplys.png',
     areas_title: 'Nuestras áreas de actuación',
     areas_text: 'Nuestra estructura y protocolos están definidos y listos para implementarse en cuanto dispongamos de la financiación necesaria.',
     fleet_title: 'Flota de rescate: el motor del proyecto',
@@ -34,13 +38,19 @@ export function ProyectoPage() {
   });
 
   const getLucideIcon = (name: string) => {
-    if (!name) return null;
-    const pascalName = name.replace(/[-_ ]+/g, ' ').split(' ').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join('');
-    return (LucideIcons as any)[pascalName] || (LucideIcons as any)[name] || null;
+    if (!name) return HelpCircle;
+    const Icon = (LucideIcons as any)[name] || HelpCircle;
+    return Icon;
   };
 
   const renderIcon = (iconName: string, className: string = "w-7 h-7") => {
-    const Icon = getLucideIcon(iconName) || HelpCircle;
+    if (!iconName) return <HelpCircle className={className} />;
+    
+    if (iconName.length <= 2) {
+      return <span className="font-black text-lg">{iconName}</span>;
+    }
+
+    const Icon = getLucideIcon(iconName);
     return <Icon className={className} />;
   };
 
@@ -51,25 +61,13 @@ export function ProyectoPage() {
 
   // Lógica para el panel de control (Dashboard)
   const homeSections = getContent('home_sections', { hidden: [] });
-  const mostrarProyectoFuturo = !homeSections.hidden.includes('ProyectoFuturo');
+  const mostrarProyectoFuturo = !homeSections.hidden.includes('Proyecto');
 
-  const areasActuacion = [
-    {
-      titulo: pageContent.area1_title,
-      descripcion: pageContent.area1_text,
-      icono: renderIcon(pageContent.area1_icon),
-    },
-    {
-      titulo: pageContent.area2_title,
-      descripcion: pageContent.area2_text,
-      icono: renderIcon(pageContent.area2_icon),
-    },
-    {
-      titulo: pageContent.area3_title,
-      descripcion: pageContent.area3_text,
-      icono: renderIcon(pageContent.area3_icon),
-    },
-  ];
+  const areasActuacion = [1, 2, 3].map(num => ({
+    titulo: pageContent[`area${num}_title`],
+    descripcion: pageContent[`area${num}_text`],
+    icono: renderIcon(pageContent[`area${num}_icon`]),
+  })).filter(a => a.titulo);
 
   return (
     <main className="bg-brand-dark min-h-screen text-brand-light pt-28 pb-16 md:pt-32 md:pb-20">
@@ -101,7 +99,7 @@ export function ProyectoPage() {
         <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-brand-light/10">
           <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent z-10"></div>
           <img 
-            src={pageContent.image || "https://images.pexels.com/photos/9000185/pexels-photo-9000185.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp"} 
+            src={getFileUrl(pageContent.image)} 
             alt="Gato rescatado descansando tranquilamente" 
             loading="lazy"
             decoding="async"
@@ -192,14 +190,14 @@ export function ProyectoPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-gray-200 shadow-xl">
                   <img 
-                    src={pageContent.fleet_img1 || "/Gemini_Generated_Image_g04w14g04w14g04w.png"} 
+                    src={getFileUrl(pageContent.fleet_img1)} 
                     alt="Unidad móvil 1" 
                     className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
                   />
                 </div>
                 <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-gray-200 shadow-xl sm:mt-12">
                   <img 
-                    src={pageContent.fleet_img2 || "/Gemini_Generated_Image_plysslplysslplys.png"} 
+                    src={getFileUrl(pageContent.fleet_img2)} 
                     alt="Unidad móvil 2" 
                     className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
                   />

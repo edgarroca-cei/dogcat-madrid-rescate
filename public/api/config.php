@@ -8,9 +8,9 @@
 
 // ===== CONFIGURAR ESTOS VALORES =====
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'tu_base_de_datos');      // Ejemplo: u123456789_dogcat
-define('DB_USER', 'tu_usuario');             // Ejemplo: u123456789_admin
-define('DB_PASS', 'tu_contraseña');          // La contraseña que elegiste
+define('DB_NAME', 'u352304367_dogcatmadrid');      // Ejemplo: u123456789_dogcat
+define('DB_USER', 'u352304367_dogcatmadrid');             // Ejemplo: u123456789_admin
+define('DB_PASS', '0$XoK5A|');          // La contraseña que elegiste
 // =====================================
 
 // Conexión PDO
@@ -31,11 +31,15 @@ try {
     exit;
 }
 
-// Headers comunes para API JSON
+// Headers comunes para API JSON y evitar caché en Hostinger (LiteSpeed)
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
+header('X-LiteSpeed-Cache-Control: no-cache');
 
 // Manejar preflight CORS
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {

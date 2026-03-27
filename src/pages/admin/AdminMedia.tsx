@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api, getFileUrl } from '../../services/api';
-import { Trash2, Copy, ExternalLink, Image as ImageIcon, Search, Check, AlertCircle, Loader2 } from 'lucide-react';
+import { Trash2, Copy, ExternalLink, Image as ImageIcon, Search, Check, AlertCircle, Loader2, Download } from 'lucide-react';
 
 interface MediaFile {
   filename: string;
@@ -161,6 +161,14 @@ export function AdminMedia() {
                    </button>
                    <a 
                      href={getFileUrl('/uploads/' + file.filename)} 
+                     download={file.filename}
+                     className="p-2 bg-white rounded-xl text-brand-dark hover:bg-brand-green transition-colors shadow-lg"
+                     title="Descargar"
+                   >
+                     <Download className="w-5 h-5" />
+                   </a>
+                   <a 
+                     href={getFileUrl('/uploads/' + file.filename)} 
                      target="_blank" 
                      rel="noopener noreferrer"
                      className="p-2 bg-white rounded-xl text-brand-dark hover:bg-brand-green transition-colors shadow-lg"
@@ -192,15 +200,6 @@ export function AdminMedia() {
         </div>
       )}
 
-      <div className="mt-12 p-6 bg-brand-dark/5 border border-brand-dark/5 rounded-[2rem] flex items-start gap-4">
-        <div className="p-3 bg-white rounded-2xl shadow-sm text-amber-500">
-           <AlertCircle className="w-6 h-6" />
-        </div>
-        <div className="text-sm text-brand-dark/70 leading-relaxed">
-          <p className="font-bold text-brand-dark mb-1">Nota sobre la limpieza del servidor:</p>
-          <p>En este entorno demo (Render), las imágenes se borran automáticamente cada vez que el servidor se reinicia. En un hosting definitivo con almacenamiento persistente, estas imágenes se conservarán y podrás usar esta galería para mantener el servidor limpio borrando las que ya no necesites.</p>
-        </div>
-      </div>
     </div>
   );
 }

@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
 // Configurar Subida de Archivos con Multer
-const uploadsDir = path.join(__dirname, '../uploads');
+const uploadsDir = path.join(__dirname, '../public/uploads'); 
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
@@ -297,6 +297,50 @@ app.delete('/api/mapas/:id', async (req, res) => {
 
 
 
+// --- MULTIMEDIA (Media Gallery) ---
+app.get('/api/media', (req, res) => {
+  try {
+    if (!fs.existsSync(uploadsDir)) {
+      return res.json([]);
+    }
+    const files = fs.readdirSync(uploadsDir);
+    const media = files.map(filename => {
+      const filePath = path.join(uploadsDir, filename);
+      const stats = fs.statSync(filePath);
+      return {
+        filename,
+        url: `/uploads/${filename}`,
+        size: stats.size,
+        mtime: stats.mtime
+      };
+    }).sort((a, b) => b.mtime - a.mtime);
+    
+    res.json(media);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/media/:filename', (req, res) => {
+  try {
+    const filename = req.params.filename;
+    // Evitar ataques de path traversal
+    if (filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+      return res.status(400).json({ error: 'Nombre de archivo no válido' });
+    }
+    
+    const filePath = path.join(uploadsDir, filename);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+      res.json({ success: true });
+    } else {
+      res.status(404).json({ error: 'Archivo no encontrado' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // --- Serve React App with Dynamic SEO (Production Mode) ---
 const distPath = path.join(__dirname, '../dist');
 
@@ -368,46 +412,6 @@ if (fs.existsSync(distPath)) {
     }
   });
 
-// --- MULTIMEDIA (Media Gallery) ---
-  app.get('/api/media', (req, res) => {
-    try {
-      const files = fs.readdirSync(uploadsDir);
-      const media = files.map(filename => {
-        const filePath = path.join(uploadsDir, filename);
-        const stats = fs.statSync(filePath);
-        return {
-          filename,
-          url: `/uploads/${filename}`,
-          size: stats.size,
-          mtime: stats.mtime
-        };
-      }).sort((a, b) => b.mtime - a.mtime);
-      
-      res.json(media);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
-
-  app.delete('/api/media/:filename', (req, res) => {
-    try {
-      const filename = req.params.filename;
-      // Evitar ataques de path traversal
-      if (filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
-        return res.status(400).json({ error: 'Nombre de archivo no válido' });
-      }
-      
-      const filePath = path.join(uploadsDir, filename);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-        res.json({ success: true });
-      } else {
-        res.status(404).json({ error: 'Archivo no encontrado' });
-      }
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
 
   // API 404 handler - ensures API calls don't get the SPA's index.html
   app.all('/api/*', (req, res) => {

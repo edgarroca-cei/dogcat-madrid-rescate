@@ -23,6 +23,7 @@ export function AdminBlogEditor() {
 
   const [loading, setLoading] = useState(isEditing);
   const [saving, setSaving] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [error, setError] = useState('');
 
   const [formData, setFormData] = useState({
@@ -244,6 +245,7 @@ export function AdminBlogEditor() {
               onChange={async (e) => {
                 const file = e.target.files?.[0];
                 if (file) {
+                  setIsUploadingImage(true);
                   try {
                     const result = await api.uploadImage(file);
                     if (result.url) {
@@ -252,6 +254,8 @@ export function AdminBlogEditor() {
                   } catch (err) {
                     console.error('Error subiendo imagen:', err);
                     alert('Error al subir la imagen. Comprueba el tamaño o formato.');
+                  } finally {
+                    setIsUploadingImage(false);
                   }
                 }
               }}
@@ -261,7 +265,12 @@ export function AdminBlogEditor() {
 
             {formData.image && (
               <div className="mt-2 relative aspect-video rounded-xl overflow-hidden border border-brand-dark/10 group">
-                <img src={getFileUrl(formData.image)} alt="Preview" className="w-full h-full object-cover" />
+                <img src={getFileUrl(formData.image)} alt="Preview" className={`w-full h-full object-cover ${isUploadingImage ? 'opacity-50 grayscale' : ''}`} />
+                {isUploadingImage && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-sm">
+                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-brand-green"></div>
+                  </div>
+                )}
                 <button
                   type="button"
                   onClick={() => setFormData(prev => ({ ...prev, image: '' }))}
@@ -323,7 +332,7 @@ export function AdminBlogEditor() {
           </Link>
           <button
             type="submit"
-            disabled={saving}
+            disabled={saving || isUploadingImage}
             className="inline-flex items-center gap-2 bg-brand-green text-brand-dark px-8 py-3 rounded-xl font-bold hover:bg-brand-green/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {saving ? (

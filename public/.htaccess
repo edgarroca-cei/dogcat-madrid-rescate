@@ -19,7 +19,24 @@ RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
 # Las peticiones a /api/* se dejan pasar (los archivos PHP ya existen)
-RewriteRule ^api/ - [L]
+# Y nos aseguramos de que LiteSpeed NO las cachee
+<IfModule mod_rewrite.c>
+  RewriteRule ^api/ - [L]
+</IfModule>
+
+# --- DESACTIVAR CACHÉ PARA LA API ---
+<IfModule mod_headers.c>
+  # Prevenir caché en el navegador y proxies
+  <FilesMatch "\.(php|json)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires 0
+  </FilesMatch>
+  
+  # Desactivar explícitamente LiteSpeed Cache para la API
+  # Referencia: https://docs.litespeedtech.com/lscache/lscphp/manually/
+  SetEnvIf Request_URI "/api/.*" LiteSpeed_NoCache=1
+</IfModule>
 
 # Todo lo demás va a index.html (React Router se encarga)
 RewriteRule ^ index.html [L]
