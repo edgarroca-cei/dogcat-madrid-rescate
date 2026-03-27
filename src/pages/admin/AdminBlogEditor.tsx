@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { api, getFileUrl } from '../../services/api';
-import { ArrowLeft, Save, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Save, Image as ImageIcon, Globe, Link as LinkIcon } from 'lucide-react';
 import ReactQuill, { Quill } from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 
@@ -34,7 +34,11 @@ export function AdminBlogEditor() {
     image: '',
     color: 'bg-brand-cream text-brand-dark',
     date: new Date().toISOString().split('T')[0],
-    author: 'Equipo DOGCAT'
+    author: 'Equipo DOGCAT',
+    isExternal: false,
+    externalUrl: '',
+    sourceName: '',
+    fontSize: 'normal'
   });
 
   useEffect(() => {
@@ -220,6 +224,80 @@ export function AdminBlogEditor() {
             />
           </div>
           <p className="text-xs text-brand-dark/50 mt-2">Usa el editor para añadir títulos, negritas, listas, enlaces e imágenes dentro del texto.</p>
+        </div>
+
+        {/* External Article Settings */}
+        <div className="p-6 bg-brand-cream/30 rounded-2xl border border-brand-green/20 space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-brand-green/20 rounded-lg">
+                <Globe className="w-5 h-5 text-brand-green" />
+              </div>
+              <div>
+                <h3 className="font-bold text-brand-dark">Configuración de Artículo Externo</h3>
+                <p className="text-xs text-brand-dark/60">Marca esta opción si el contenido es de otra fuente.</p>
+              </div>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input 
+                type="checkbox" 
+                className="sr-only peer"
+                checked={formData.isExternal}
+                onChange={(e) => setFormData(prev => ({ ...prev, isExternal: e.target.checked }))}
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-brand-green/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-green"></div>
+            </label>
+          </div>
+
+          {formData.isExternal && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 animate-in fade-in slide-in-from-top-2 duration-300">
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-brand-dark/80">URL Original</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <LinkIcon className="h-4 w-4 text-brand-dark/40" />
+                  </div>
+                  <input
+                    type="url"
+                    name="externalUrl"
+                    value={formData.externalUrl}
+                    onChange={handleChange}
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-brand-dark/10 focus:ring-2 focus:ring-brand-green focus:border-transparent outline-none transition-all"
+                    placeholder="https://..."
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-brand-dark/80">Nombre de la Fuente</label>
+                <input
+                  type="text"
+                  name="sourceName"
+                  value={formData.sourceName}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl border border-brand-dark/10 focus:ring-2 focus:ring-brand-green focus:border-transparent outline-none transition-all"
+                  placeholder="Ej: La Vanguardia, El País..."
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="pt-4 border-t border-brand-green/10 flex flex-wrap items-center gap-6">
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-semibold text-brand-dark/80">Tamaño de Texto:</label>
+              <select
+                name="fontSize"
+                value={formData.fontSize}
+                onChange={handleChange}
+                className="px-3 py-1.5 rounded-lg border border-brand-dark/10 focus:ring-2 focus:ring-brand-green outline-none bg-white text-sm"
+              >
+                <option value="small">Pequeño</option>
+                <option value="normal">Normal</option>
+                <option value="large">Grande</option>
+                <option value="xlarge">Muy Grande</option>
+              </select>
+            </div>
+            <p className="text-xs text-brand-dark/50">Ajusta cómo se verá el cuerpo del artículo en pantallas grandes.</p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

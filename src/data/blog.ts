@@ -7,6 +7,10 @@ export interface BlogPost {
   color: string;
   date: string;
   author: string;
+  isExternal?: boolean;
+  externalUrl?: string;
+  sourceName?: string;
+  fontSize?: string;
 }
 
 export const blogPosts: BlogPost[] = [

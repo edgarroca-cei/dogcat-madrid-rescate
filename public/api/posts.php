@@ -11,6 +11,19 @@
 require_once __DIR__ . '/config.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
+// --- AUTO-MIGRACIÓN ---
+// Aseguramos que las nuevas columnas existan en la tabla 'posts'
+try {
+    // Verificar si las columnas ya existen para evitar errores
+    $checkCols = $pdo->query("SHOW COLUMNS FROM posts LIKE 'isExternal'")->fetch();
+    if (!$checkCols) {
+        $pdo->exec("ALTER TABLE posts ADD COLUMN isExternal TINYINT(1) DEFAULT 0");
+        $pdo->exec("ALTER TABLE posts ADD COLUMN externalUrl TEXT DEFAULT NULL");
+        $pdo->exec("ALTER TABLE posts ADD COLUMN fontSize VARCHAR(50) DEFAULT 'normal'");
+    }
+} catch (Exception $e) {
+    // Silencioso si falla (quizás por permisos), el log de errores de PHP lo capturará
+}
 
 switch ($method) {
     case 'GET':
@@ -50,32 +63,50 @@ switch ($method) {
             
             if ($existing) {
                 $stmt = $pdo->prepare('UPDATE posts SET 
-                    title=?, slug=?, excerpt=?, content=?, image=?, color=?, date=?, author=?, createdAt=?
+                    title=?, slug=?, excerpt=?, content=?, image=?, color=?, date=?, author=?, createdAt=?,
+                    isExternal=?, externalUrl=?, sourceName=?, fontSize=?
                     WHERE id=?');
                 $stmt->execute([
                     $data['title'] ?? '', $data['slug'] ?? '', $data['excerpt'] ?? '',
                     $data['content'] ?? '', $data['image'] ?? '', $data['color'] ?? '',
                     $data['date'] ?? '', $data['author'] ?? '',
-                    $data['createdAt'] ?? $createdAt, $id
+                    $data['createdAt'] ?? $createdAt,
+                    isset($data['isExternal']) ? ($data['isExternal'] ? 1 : 0) : 0,
+                    $data['externalUrl'] ?? null,
+                    $data['sourceName'] ?? null,
+                    $data['fontSize'] ?? 'normal',
+                    $id
                 ]);
             } else {
-                $stmt = $pdo->prepare('INSERT INTO posts 
-                    (id, title, slug, excerpt, content, image, color, date, author, createdAt)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+            $stmt = $pdo->prepare('INSERT INTO posts 
+                    (id, title, slug, excerpt, content, image, color, date, author, createdAt, isExternal, externalUrl, sourceName, fontSize)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
                 $stmt->execute([
-                    $id, $data['title'] ?? '', $data['slug'] ?? '', $data['excerpt'] ?? '',
+                    $id, 
+                    $data['title'] ?? '', $data['slug'] ?? '', $data['excerpt'] ?? '',
                     $data['content'] ?? '', $data['image'] ?? '', $data['color'] ?? '',
-                    $data['date'] ?? '', $data['author'] ?? '', $createdAt
+                    $data['date'] ?? '', $data['author'] ?? '', 
+                    $createdAt,
+                    isset($data['isExternal']) ? ($data['isExternal'] ? 1 : 0) : 0,
+                    $data['externalUrl'] ?? null,
+                    $data['sourceName'] ?? null,
+                    $data['fontSize'] ?? 'normal'
                 ]);
             }
         } else {
             $stmt = $pdo->prepare('INSERT INTO posts 
-                (id, title, slug, excerpt, content, image, color, date, author, createdAt)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+                (id, title, slug, excerpt, content, image, color, date, author, createdAt, isExternal, externalUrl, sourceName, fontSize)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
             $stmt->execute([
-                $id, $data['title'] ?? '', $data['slug'] ?? '', $data['excerpt'] ?? '',
+                $id, 
+                $data['title'] ?? '', $data['slug'] ?? '', $data['excerpt'] ?? '',
                 $data['content'] ?? '', $data['image'] ?? '', $data['color'] ?? '',
-                $data['date'] ?? '', $data['author'] ?? '', $createdAt
+                $data['date'] ?? '', $data['author'] ?? '', 
+                $createdAt,
+                isset($data['isExternal']) ? ($data['isExternal'] ? 1 : 0) : 0,
+                $data['externalUrl'] ?? null,
+                $data['sourceName'] ?? null,
+                $data['fontSize'] ?? 'normal'
             ]);
         }
         

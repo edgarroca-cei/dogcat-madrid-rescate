@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Calendar, User, Clock, ArrowRight } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Clock, ArrowRight, ExternalLink } from 'lucide-react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { api, getFileUrl } from '../services/api';
 
@@ -13,7 +13,18 @@ interface BlogPostData {
   color: string;
   date: string;
   author: string;
+  isExternal?: boolean;
+  externalUrl?: string;
+  sourceName?: string;
+  fontSize?: 'small' | 'normal' | 'large' | 'xlarge' | string;
 }
+
+const cleanContent = (html: string) => {
+  if (!html) return '';
+  return html
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\u00a0/g, ' ');
+};
 
 const formatDate = (dateStr: string) => {
   if (!dateStr) return '';
@@ -97,7 +108,7 @@ export function BlogPost() {
               <span className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md shadow-sm border border-brand-dark/5"><Clock className="w-4 h-4 text-brand-green" /> {readingTime} min lectura</span>
               <span className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md shadow-sm border border-brand-dark/5"><User className="w-4 h-4 text-brand-green" /> {post.author}</span>
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-8 leading-tight">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-8 leading-tight">
               {post.title}
             </h1>
             <p className="text-lg md:text-xl text-brand-dark/80 leading-relaxed border-l-4 border-brand-green pl-6 font-medium">
@@ -118,14 +129,37 @@ export function BlogPost() {
         </div>
 
         {/* Content Section */}
-        <div className="max-w-3xl mx-auto bg-white p-6 sm:p-10 md:p-14 rounded-[2.5rem] shadow-xl shadow-brand-dark/5 border border-brand-dark/5 mb-20 relative">
+        <div className="w-full max-w-5xl mx-auto bg-white p-5 sm:p-8 md:p-12 rounded-[2.5rem] shadow-xl shadow-brand-dark/5 border border-brand-dark/5 mb-20 relative">
           {/* Decorative pin */}
           <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-brand-green rounded-full shadow-inner border-2 border-white/50"></div>
           
           <div 
-            className="prose prose-lg md:prose-xl prose-brand max-w-none prose-headings:font-bold prose-headings:text-brand-dark prose-p:text-brand-dark/80 prose-a:text-brand-green hover:prose-a:text-brand-green/80 prose-img:rounded-3xl prose-img:shadow-lg prose-ul:list-disc prose-ul:pl-6 marker:text-brand-green"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            className={`prose prose-brand max-w-none prose-headings:font-bold prose-headings:text-brand-dark prose-p:text-brand-dark/80 prose-a:text-brand-green hover:prose-a:text-brand-green/80 prose-img:rounded-3xl prose-img:shadow-lg prose-ul:list-disc prose-ul:pl-6 marker:text-brand-green break-words text-left [hyphens:none] ${
+              post.fontSize === 'small' ? 'prose-sm' : 
+              post.fontSize === 'large' ? 'prose-xl' : 
+              post.fontSize === 'xlarge' ? 'prose-2xl' : 
+              'prose-lg md:prose-xl'
+            }`}
+            dangerouslySetInnerHTML={{ __html: cleanContent(post.content) }}
           />
+
+          {/* External Article Link */}
+          {post.isExternal && post.externalUrl && (
+            <div className="mt-12 pt-10 border-t border-brand-dark/10 flex flex-col items-center text-center">
+              <p className="text-brand-dark/60 mb-4 font-medium italic">
+                Este artículo fue publicado originalmente en {post.sourceName || 'una fuente externa'}.
+              </p>
+              <a 
+                href={post.externalUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-brand-green text-brand-dark px-8 py-4 rounded-2xl font-bold hover:bg-brand-dark hover:text-white transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 active:translate-y-0"
+              >
+                Ver artículo original {post.sourceName && `en ${post.sourceName}`}
+                <ExternalLink className="w-5 h-5" />
+              </a>
+            </div>
+          )}
         </div>
 
         {/* Share Section */}
