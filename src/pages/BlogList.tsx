@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { ArrowRight, Calendar, Search, BookOpen } from 'lucide-react';
+import { ArrowRight, Search, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { api, getFileUrl } from '../services/api';
 import { useContent } from '../contexts/ContentContext';
+import { getBlogCardClasses } from '../utils/blogCardStyles';
 
 interface BlogPost {
   id: string;
@@ -13,13 +14,6 @@ interface BlogPost {
   color: string;
   date: string;
 }
-
-const formatDate = (dateStr: string) => {
-  if (!dateStr) return '';
-  const d = new Date(dateStr);
-  if (isNaN(d.getTime())) return dateStr;
-  return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-};
 
 export function BlogList() {
   const { getContent } = useContent();
@@ -101,33 +95,31 @@ export function BlogList() {
             No hemos encontrado ningún artículo que coincida con tu búsqueda.
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredPosts.map((post) => (
               <Link 
                 key={post.id} 
                 to={`/blog/${post.slug}`}
-                className={`${post.color} rounded-[2rem] overflow-hidden shadow-xl flex flex-col group hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl hover:shadow-brand-green/10`}
+                className={`${getBlogCardClasses(post.color)} rounded-3xl overflow-hidden flex flex-col group hover:-translate-y-1.5 transition-all duration-300 hover:shadow-2xl hover:shadow-black/20`}
               >
-                <div className="relative h-48 sm:h-56 lg:h-64 overflow-hidden">
+                <div className="relative h-32 sm:h-48 overflow-hidden">
                   <img 
-                    src={getFileUrl(post.image)} 
+                    src={`${getFileUrl(post.image)}?auto=format&fit=crop&q=80&w=800&fm=webp`}
                     alt={post.title} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
-                <div className="p-6 sm:p-8 flex flex-col flex-grow">
-                  <div className="flex items-center gap-4 text-xs opacity-70 mb-4 font-bold tracking-wide uppercase">
-                    <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {formatDate(post.date)}</span>
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-bold mb-4 leading-tight group-hover:opacity-80 transition-opacity">
+                <div className="p-4 sm:p-6 flex flex-col flex-grow">
+                  <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 leading-tight">
                     {post.title}
                   </h3>
-                  <p className="opacity-80 text-base leading-relaxed mb-8 flex-grow line-clamp-3">
+                  <p className="text-brand-dark/75 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 flex-grow line-clamp-3 sm:line-clamp-none">
                     {post.excerpt}
                   </p>
-                  <div className="self-start font-bold flex items-center gap-2 group-hover:gap-4 transition-all text-sm mt-auto bg-black/5 px-4 py-2 rounded-full">
-                    Leer artículo <ArrowRight className="w-4 h-4" />
+                  <div className="self-start font-bold flex items-center gap-2 text-xs sm:text-sm bg-brand-dark/[0.04] px-4 py-2 rounded-full group-hover:bg-brand-green/20 transition-colors">
+                    Leer más <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
               </Link>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ArrowLeft, Calendar, User, Clock, ArrowRight, ExternalLink } from 'lucide-react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { api, getFileUrl } from '../services/api';
+import { getBlogCardClasses } from '../utils/blogCardStyles';
 
 interface BlogPostData {
   id: string;
@@ -229,30 +230,32 @@ export function BlogPost() {
               </Link>
             </div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedPosts.map((relatedPost) => (
                 <Link 
                   key={relatedPost.id} 
                   to={`/blog/${relatedPost.slug}`}
-                  className={`${relatedPost.color} rounded-3xl overflow-hidden shadow-lg flex flex-col group hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl`}
+                  className={`${getBlogCardClasses(relatedPost.color, 'related')} rounded-3xl overflow-hidden flex flex-col group hover:-translate-y-1.5 transition-all duration-300 hover:shadow-2xl hover:shadow-black/20`}
                 >
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-32 sm:h-48 overflow-hidden">
                     <img 
-                      src={getFileUrl(relatedPost.image)} 
+                      src={`${getFileUrl(relatedPost.image)}?auto=format&fit=crop&q=80&w=800&fm=webp`}
                       alt={relatedPost.title} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                   </div>
-                  <div className="p-6 sm:p-8 flex flex-col flex-grow">
-                    <div className="text-xs opacity-70 mb-3 font-bold uppercase tracking-wider flex items-center gap-2">
-                       <Calendar className="w-3 h-3" /> {formatDate(relatedPost.date)}
-                    </div>
-                    <h3 className="text-xl sm:text-2xl font-bold mb-3 leading-tight group-hover:opacity-80 transition-opacity">
+                  <div className="p-4 sm:p-6 flex flex-col flex-grow">
+                    <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 leading-tight">
                       {relatedPost.title}
                     </h3>
-                    <p className="opacity-80 text-sm leading-relaxed mb-6 flex-grow line-clamp-2">
+                    <p className="text-brand-dark/75 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 flex-grow line-clamp-3 sm:line-clamp-none">
                       {relatedPost.excerpt}
                     </p>
+                    <div className="self-start font-bold flex items-center gap-2 text-xs sm:text-sm bg-brand-dark/[0.04] px-4 py-2 rounded-full group-hover:bg-brand-green/20 transition-colors">
+                      Leer más <ArrowRight className="w-4 h-4" />
+                    </div>
                   </div>
                 </Link>
               ))}

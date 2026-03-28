@@ -38,6 +38,8 @@ export function AdminDashboard() {
     fetchPosts();
   }, []);
 
+  const getPostIdentifier = (post: BlogPost) => post.id || post.slug;
+
   const handleSeedData = async () => {
     if (!window.confirm("¿Añadir 5 entradas de prueba al blog?")) return;
     setLoading(true);
@@ -111,7 +113,7 @@ export function AdminDashboard() {
     if (window.confirm(`¿Estás seguro de que quieres eliminar el artículo "${title}"?`)) {
       try {
         await api.deleteBlogPost(id);
-        setPosts(posts.filter(p => p.id !== id));
+        setPosts(posts.filter(p => getPostIdentifier(p) !== id));
       } catch (error) {
         console.error("Error deleting post:", error);
         alert("Hubo un error al eliminar el artículo.");
@@ -170,43 +172,47 @@ export function AdminDashboard() {
                   </td>
                 </tr>
               ) : (
-                posts.map((post) => (
-                  <tr key={post.id} className="hover:bg-brand-light/20 transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="font-medium text-brand-dark">{post.title}</div>
-                      <div className="text-xs text-brand-dark/50 mt-1">/{post.slug}</div>
-                    </td>
-                    <td className="px-6 py-4 text-brand-dark/70">{formatDate(post.date)}</td>
-                    <td className="px-6 py-4 text-brand-dark/70">{post.author}</td>
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-3">
-                        <Link
-                          to={`/blog/${post.slug}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-brand-dark/50 hover:text-brand-green transition-colors"
-                          title="Ver en la web"
-                        >
-                          <ExternalLink className="w-5 h-5" />
-                        </Link>
-                        <Link
-                          to={`/admin/blog/edit/${post.id}`}
-                          className="text-brand-dark/50 hover:text-blue-500 transition-colors"
-                          title="Editar"
-                        >
-                          <Edit2 className="w-5 h-5" />
-                        </Link>
-                        <button
-                          onClick={() => handleDelete(post.id, post.title)}
-                          className="text-brand-dark/50 hover:text-red-500 transition-colors"
-                          title="Eliminar"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                posts.map((post) => {
+                  const postIdentifier = getPostIdentifier(post);
+
+                  return (
+                    <tr key={postIdentifier} className="hover:bg-brand-light/20 transition-colors">
+                      <td className="px-6 py-4">
+                        <div className="font-medium text-brand-dark">{post.title}</div>
+                        <div className="text-xs text-brand-dark/50 mt-1">/{post.slug}</div>
+                      </td>
+                      <td className="px-6 py-4 text-brand-dark/70">{formatDate(post.date)}</td>
+                      <td className="px-6 py-4 text-brand-dark/70">{post.author}</td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex items-center justify-end gap-3">
+                          <Link
+                            to={`/blog/${post.slug}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-brand-dark/50 hover:text-brand-green transition-colors"
+                            title="Ver en la web"
+                          >
+                            <ExternalLink className="w-5 h-5" />
+                          </Link>
+                          <Link
+                            to={`/admin/blog/edit/${postIdentifier}`}
+                            className="text-brand-dark/50 hover:text-blue-500 transition-colors"
+                            title="Editar"
+                          >
+                            <Edit2 className="w-5 h-5" />
+                          </Link>
+                          <button
+                            onClick={() => handleDelete(postIdentifier, post.title)}
+                            className="text-brand-dark/50 hover:text-red-500 transition-colors"
+                            title="Eliminar"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

@@ -1,0 +1,5 @@
+SFTP OK
+project=dogcat-madrid-rescate
+check=public root
+date=2026-03-28
+expected_url=https://dogcatmadrid.org/sftp-check.txt

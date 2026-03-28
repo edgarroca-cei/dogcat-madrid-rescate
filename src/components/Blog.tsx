@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { api, getFileUrl } from '../services/api';
 import { useContent } from '../contexts/ContentContext';
+import { getBlogCardClasses } from '../utils/blogCardStyles';
 
 interface BlogPost {
   id: string;
@@ -68,7 +69,7 @@ export function Blog() {
               <Link 
                 key={story.id} 
                 to={`/blog/${story.slug}`}
-                className={`${story.color} rounded-3xl overflow-hidden shadow-xl flex flex-col group hover:-translate-y-1 transition-transform duration-300`}
+                className={`${getBlogCardClasses(story.color)} rounded-3xl overflow-hidden flex flex-col group hover:-translate-y-1.5 transition-all duration-300 hover:shadow-2xl hover:shadow-black/20`}
               >
                 <div className="relative h-32 sm:h-48 overflow-hidden">
                     <img 
@@ -83,10 +84,10 @@ export function Blog() {
                   <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 leading-tight">
                     {story.title}
                   </h3>
-                  <p className="opacity-80 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 flex-grow line-clamp-3 sm:line-clamp-none">
+                  <p className="text-brand-dark/75 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 flex-grow line-clamp-3 sm:line-clamp-none">
                     {story.excerpt}
                   </p>
-                  <div className="self-start font-bold flex items-center gap-2 hover:opacity-70 transition-opacity text-xs sm:text-sm">
+                  <div className="self-start font-bold flex items-center gap-2 text-xs sm:text-sm bg-brand-dark/[0.04] px-4 py-2 rounded-full group-hover:bg-brand-green/20 transition-colors">
                     Leer más <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>

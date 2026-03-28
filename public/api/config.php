@@ -13,6 +13,11 @@ define('DB_USER', 'u352304367_dogcatmadrid');             // Ejemplo: u123456789
 define('DB_PASS', '0$XoK5A|');          // La contraseña que elegiste
 // =====================================
 
+// Error Reporting (Habilitar para debug si hay fallos)
+error_reporting(E_ALL);
+ini_set('display_errors', '0'); // Mantener en 0 para no romper el JSON con warnings de PHP
+ini_set('log_errors', '1');
+
 // Conexión PDO
 try {
     $pdo = new PDO(
@@ -27,9 +32,15 @@ try {
     );
 } catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(['error' => 'Error de conexión a la base de datos: ' . $e->getMessage()]);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode([
+        'error' => 'Backend database connection failed', 
+        'message' => $e->getMessage(),
+        'hint' => 'Revisa los valores DB_HOST, DB_NAME, DB_USER y DB_PASS en config.php'
+    ]);
     exit;
 }
+
 
 // Headers comunes para API JSON y evitar caché en Hostinger (LiteSpeed)
 header('Content-Type: application/json; charset=utf-8');

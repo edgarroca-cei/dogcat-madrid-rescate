@@ -119,9 +119,10 @@ export function AdminBlogEditor() {
     setError('');
 
     try {
-      const postId = isEditing ? id : formData.slug;
+      // Para posts nuevos, el id debe estar vacío para que el backend genere uno automáticamente
+      const postId = isEditing ? id : '';
       
-      if (!postId) {
+      if (!formData.slug) {
         throw new Error('El slug es obligatorio.');
       }
 
@@ -362,7 +363,7 @@ export function AdminBlogEditor() {
 
           <div className="space-y-6">
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-brand-dark/80">Color de la tarjeta</label>
+              <label className="block text-sm font-semibold text-brand-dark/80">Color de acento de la tarjeta</label>
               <select
                 name="color"
                 value={formData.color}
@@ -373,6 +374,7 @@ export function AdminBlogEditor() {
                 <option value="bg-brand-green text-brand-dark">Verde (bg-brand-green)</option>
                 <option value="bg-brand-light text-brand-dark">Blanco (bg-brand-light)</option>
               </select>
+              <p className="text-xs text-brand-dark/50">Este color se usa como detalle visual de la tarjeta, no como fondo completo.</p>
             </div>
 
             <div className="space-y-2">

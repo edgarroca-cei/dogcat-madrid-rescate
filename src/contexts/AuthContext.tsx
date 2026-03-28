@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Si fuera un login real con contraseña, aquí se pedirían credenciales.
     // Como es temporal, vamos a loguear directamente.
     // En produccion se puede mostrar un prompt temporal.
-    const fakePass = window.prompt("Introduce la contraseña de administrador\nPista: D0gc4t!");
+    const fakePass = window.prompt("Introduce la contraseña de administrador");
     if (fakePass === 'D0gc4t!') {
       localStorage.setItem('dogcat_auth', 'true');
       setUser({

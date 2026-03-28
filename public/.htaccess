@@ -1,42 +1,45 @@
-# =====================================================
-# .htaccess para DOGCAT Madrid en Hostinger
-# =====================================================
-# 1. Las peticiones a /api/* van a los archivos PHP
-# 2. Los archivos estáticos (JS, CSS, imágenes) se sirven directamente
-# 3. Todo lo demás se redirige a index.html (SPA React Router)
-# =====================================================
+# Configuración para Hostinger (Apache/LiteSpeed)
+# Este archivo asegura que React Router y la API PHP funcionen correctamente
 
 RewriteEngine On
+RewriteBase /
 
-# Forzar HTTPS (recomendado en producción)
-# RewriteCond %{HTTPS} off
-# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# Si la petición es para la API, no la redirijas a index.html
+RewriteRule ^api/ - [L]
 
-# Si el archivo o directorio existe, servirlo directamente
-# (esto incluye JS, CSS, imágenes, uploads, etc)
+# Renderizar metadatos dinámicos para posts del blog
+RewriteRule ^blog/([^/]+)/?$ blog.php?slug=$1 [L,QSA]
+
+# Si el archivo o directorio existe físicamente, úsalo directamente
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Las peticiones a /api/* se dejan pasar (los archivos PHP ya existen)
-# Y nos aseguramos de que LiteSpeed NO las cachee
-<IfModule mod_rewrite.c>
-  RewriteRule ^api/ - [L]
-</IfModule>
-
-# --- DESACTIVAR CACHÉ PARA LA API ---
-<IfModule mod_headers.c>
-  # Prevenir caché en el navegador y proxies
-  <FilesMatch "\.(php|json)$">
-    Header set Cache-Control "no-cache, no-store, must-revalidate"
-    Header set Pragma "no-cache"
-    Header set Expires 0
-  </FilesMatch>
-  
-  # Desactivar explícitamente LiteSpeed Cache para la API
-  # Referencia: https://docs.litespeedtech.com/lscache/lscphp/manually/
-  SetEnvIf Request_URI "/api/.*" LiteSpeed_NoCache=1
-</IfModule>
-
-# Todo lo demás va a index.html (React Router se encarga)
+# Redirigir todas las demás peticiones a index.html (SPA routing)
 RewriteRule ^ index.html [L]
+
+# Política de cache: HTML y PHP siempre frescos
+<IfModule mod_headers.c>
+    <FilesMatch "^(index\.html|blog\.php)$">
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+    </FilesMatch>
+
+    <FilesMatch "\.(html)$">
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+    </FilesMatch>
+
+    <FilesMatch "\.(css|js|mjs|svg|png|jpg|jpeg|gif|webp|woff2?)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>
+
+# Desactivar cache para respuestas PHP
+<FilesMatch "\.(php)$">
+    Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+</FilesMatch>

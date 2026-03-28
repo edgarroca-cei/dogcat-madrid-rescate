@@ -15,6 +15,11 @@ export default defineConfig(({mode}) => {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    publicDir: false,
+    build: {
+      outDir: 'dist',
+      emptyOutDir: true,
+    },
     server: {
       proxy: {
         '/api': {
